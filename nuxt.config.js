@@ -41,7 +41,12 @@ export default {
         // https://go.nuxtjs.dev/bootstrap
         'bootstrap-vue/nuxt'
     ],
-
+    router: {
+        base: '/smartvue'
+    },
+    generate: {
+        subFolders: false
+    },
     // Build Configuration: https://go.nuxtjs.dev/config-build
     build: {}
 }
