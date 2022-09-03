@@ -6,7 +6,7 @@ before_script:
 pages:
     script:
         - yarn generate
-        - mv ./dist/* ./public/
+        - mv ./dist ./public
     artifacts:
         paths:
             # The folder that contains the files to be exposed at the Page URL
