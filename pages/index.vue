@@ -5,7 +5,7 @@
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
             <b-collapse id="nav-collapse" is-nav>
                 <b-navbar-nav>
-                    <b-nav-item href="/">Home</b-nav-item>
+                    <b-nav-item active href="/">Home</b-nav-item>
                     <b-nav-item href="/highlight">Highlight</b-nav-item>
                     <b-nav-item href="/evaluate">Evaluation</b-nav-item>
                 </b-navbar-nav>
