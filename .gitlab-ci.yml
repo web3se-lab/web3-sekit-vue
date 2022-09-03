@@ -2,7 +2,6 @@
 image: node:lts
 # Functions that should be executed before the build script is run
 before_script:
-  - npm install -g yarn
   - yarn
 pages:
   script:
