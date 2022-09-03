@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 let URL = 'http://localhost:8080'
-if (process.env.NODE_ENV !== 'development') URL = 'http://10.144.1.1:8080'
+if (process.env.NODE_ENV !== 'development') URL = 'http://47.100.113.103'
 
 export default {
     async get(ctl, params) {
@@ -16,7 +16,8 @@ export default {
     // support 10 layers { }
     getContracts(text) {
         text = this.hashStr(text)
-        const reg = /(^|\s|)(contract|interface|library|abstract\s*contract)[^;{}]*{(?:[^{}]+|{(?:[^{}]+|{(?:[^{}]+|{(?:[^{}]+|{(?:[^{}]+|{(?:[^{}]+|{(?:[^{}]+|{(?:[^{}]+|{(?:[^{}]+|{[^{}]*})*})*})*})*})*})*})*})*})*}/gm
+        const reg =
+            /(^|\s|)(contract|interface|library|abstract\s*contract)[^;{}]*{(?:[^{}]+|{(?:[^{}]+|{(?:[^{}]+|{(?:[^{}]+|{(?:[^{}]+|{(?:[^{}]+|{(?:[^{}]+|{(?:[^{}]+|{(?:[^{}]+|{[^{}]*})*})*})*})*})*})*})*})*})*}/gm
         const res = text.match(reg) || []
         for (const i in res) res[i] = this.hashStr(res[i].trim(), false)
         return res
@@ -24,7 +25,8 @@ export default {
     // support 9 layers { }
     getFunctions(text) {
         text = this.hashStr(text)
-        const reg = /(^|\s|)(function|event|modifier|constructor)[^{};]*({(?:[^}{]+|{(?:[^}{]+|{(?:[^}{]+|{(?:[^}{]+|{(?:[^}{]+|{(?:[^}{]+|{(?:[^}{]+|{(?:[^}{]+|{[^}{]*})*})*})*})*})*})*})*})*}|;)/gm
+        const reg =
+            /(^|\s|)(function|event|modifier|constructor)[^{};]*({(?:[^}{]+|{(?:[^}{]+|{(?:[^}{]+|{(?:[^}{]+|{(?:[^}{]+|{(?:[^}{]+|{(?:[^}{]+|{(?:[^}{]+|{[^}{]*})*})*})*})*})*})*})*})*}|;)/gm
         const res = text.match(reg) || []
         for (const i in res) res[i] = this.hashStr(res[i].trim(), false)
         return res
