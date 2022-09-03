@@ -1,6 +1,6 @@
 export default {
     // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
-    ssr: false,
+    ssr: true,
 
     // Target: https://go.nuxtjs.dev/config-target
     target: 'static',
@@ -24,7 +24,11 @@ export default {
     css: ['~/static/css/style.css'],
 
     // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-    plugins: ['~/plugins/highlight', '~/plugins/echarts', '~/plugins/vis'],
+    plugins: [
+        { src: '~/plugins/highlight', ssr: false },
+        { src: '~/plugins/echarts', ssr: false },
+        { src: '~/plugins/vis', ssr: false }
+    ],
 
     // Auto import components: https://go.nuxtjs.dev/config-components
     components: true,
@@ -47,6 +51,5 @@ export default {
     generate: {
         subFolders: false
     },
-    // Build Configuration: https://go.nuxtjs.dev/config-build
     build: {}
 }
