@@ -1,0 +1,6 @@
+.fullscreen {
+    width: 90vw;
+    min-width: 600px;
+    max-width: 920px;
+    margin: 0 auto;
+}

@@ -1,0 +1,253 @@
+<template>
+    <div>
+        <b-navbar toggleable="lg" type="dark" variant="primary">
+            <b-navbar-brand href="#">Web3 Crack</b-navbar-brand>
+            <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+            <b-collapse id="nav-collapse" is-nav>
+                <b-navbar-nav>
+                    <b-nav-item href="/">Home</b-nav-item>
+                    <b-nav-item href="/highlight">Highlight</b-nav-item>
+                    <b-nav-item href="/evaluate">Evalution</b-nav-item>
+                </b-navbar-nav>
+
+                <!-- Right aligned nav items -->
+                <b-navbar-nav class="ml-auto">
+                    <b-nav-form @submit.prevent="loadData">
+                        <b-form-input
+                            v-model="keyword"
+                            class="search"
+                            placeholder="Id/Address"
+                            size="sm"
+                        />
+                        <b-button type="button" size="sm" @click="loadData">Search</b-button>
+                    </b-nav-form>
+
+                    <b-nav-item-dropdown text="Lang" right>
+                        <b-dropdown-item href="#">EN</b-dropdown-item>
+                    </b-nav-item-dropdown>
+                </b-navbar-nav>
+            </b-collapse>
+        </b-navbar>
+        <div class="fullscreen">
+            <div v-show="id && address" class="info text-center">
+                <p>Contract ID: {{ id }}</p>
+                <p>Contract Address: {{ address }}</p>
+            </div>
+            <div v-if="sourceCode" class="source-code">
+                <div>
+                    <b-button-group>
+                        <b-button variant="success" @click="tab = 0">Context</b-button>
+                        <b-button variant="primary" @click="tab = 1">CCTree</b-button>
+                        <b-button variant="warning" @click="tab = 2">OpCode</b-button>
+                    </b-button-group>
+                </div>
+                <div v-if="tab === 0">
+                    <div v-for="(item, index) in sourceCode" :key="index" class="source-code">
+                        <h3>{{ index }}</h3>
+                        <Highlight v-show="item" class="code" :code="item" lang="solidity" />
+                    </div>
+                </div>
+                <div v-if="tab === 1">
+                    <h3>Tree by SolCodeMap</h3>
+                    <v-chart class="chart" :option="option3" />
+                    <h3>Tree by ABI</h3>
+                    <v-chart class="chart" :option="option1" />
+                    <h3>Tree by MethodIdentifiers</h3>
+                    <v-chart class="chart" :option="option2" />
+                </div>
+                <div v-if="tab === 2">
+                    <div v-for="(item, index) in opCode" :key="index" class="source-code">
+                        <h3>{{ index }}</h3>
+                        <Highlight v-show="item" class="code opcode" :code="item" lang="solidity" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+import $ from '~/utils/tool'
+import option from '~/utils/option'
+
+const COLOR1 = '#007bff'
+const COLOR2 = '#ffc107'
+const COLOR3 = '#28a745'
+const COLOR4 = '#17a2b8'
+const COLOR5 = '#dc3545'
+
+export default {
+    name: 'IndexPage',
+    data() {
+        return {
+            tab: 0,
+            id: '',
+            address: '',
+            keyword: '',
+            sourceCode: null,
+            opCode: null,
+            tree: '',
+            option1: $.getObject(option),
+            option2: $.getObject(option),
+            option3: $.getObject(option)
+        }
+    },
+    methods: {
+        async loadData() {
+            try {
+                const res = await $.get('code/get', { key: this.keyword })
+                if (res) {
+                    this.id = res.Id
+                    this.address = res.ContractAddress
+                    this.sourceCode = this.getContractMap(res.SourceCode)
+                    this.opCode = JSON.parse(res.OpCode)
+                    // handle trees
+                    const json1 = JSON.parse(res.ABI)
+                    const json2 = JSON.parse(res.MethodIdentifiers)
+                    const json3 = JSON.parse(res.SourceCodeMap)
+                    this.option1.series[0].data = this.getTree1(json1)
+                    this.option2.series[0].data = this.getTree2(json2)
+                    this.option3.series[0].data = this.getTree3(json3)
+                } else {
+                    this.sourceCode = null
+                    this.opCode = []
+                    this.abi = []
+                }
+            } catch (e) {
+                this.id = ''
+                this.sourceCode = null
+                this.address = ''
+                this.opCode = null
+            }
+        },
+        getContractMap(sourceCode) {
+            const contracts = $.getContracts(sourceCode)
+            const data = {}
+            for (const item of contracts) {
+                const word = $.getContractName(item)
+                data[word] = item
+            }
+            return data
+        },
+        // ABI
+        getTree1(abi) {
+            const data = { name: 'Smart Contract', children: [], itemStyle: { color: COLOR1 } }
+            for (const i in abi) {
+                const data2 = { name: i, children: [], itemStyle: { color: COLOR2 } }
+                for (const item of abi[i]) {
+                    const data3 = {
+                        name: item.name || item.type,
+                        children: [],
+                        itemStyle: { color: COLOR3 }
+                    }
+                    if (item.type === 'constructor') data3.itemStyle = { color: COLOR5 }
+                    data3.children = item.inputs
+                    for (const j in item.inputs) {
+                        item.inputs[j].itemStyle = { color: COLOR4 }
+                        item.inputs[j].label = {
+                            formatter: `${item.inputs[j].name}(${item.inputs[j].type})`
+                        }
+                    }
+                    data2.children.push(data3)
+                }
+                data.children.push(data2)
+            }
+            return [data]
+        },
+        // MethodIdentifiers
+        getTree2(methods) {
+            const data = { name: 'Smart Contract', children: [], itemStyle: { color: '#000' } }
+            for (const i in methods) {
+                const data2 = { name: i, children: [] }
+                for (const j in methods[i])
+                    data2.children.push({
+                        name: j,
+                        tooltip: {
+                            formatter() {
+                                return methods[i][j]
+                            }
+                        }
+                    })
+                data.children.push(data2)
+            }
+            return [data]
+        },
+        // SolCodeMap
+        getTree3(map) {
+            const label = {
+                align: 'center',
+                verticalAlign: 'bottom',
+                offset: [0, -15]
+            }
+            const data = {
+                name: 'Smart Contract',
+                children: [],
+                itemStyle: { color: '#000' }
+            }
+            for (const i in map) {
+                const data2 = {
+                    name: i,
+                    children: [],
+                    label
+                }
+                for (const j in map[i]) {
+                    const tooltip = {
+                        position(point, params, dom, rect, size) {
+                            const obj = { top: point[1] + 10 }
+                            obj[['left', 'right'][+(point[0] < size.viewSize[0] / 2)]] = 5
+                            return obj
+                        },
+                        formatter() {
+                            return `<pre>${map[i][j]}</pre>`
+                        }
+                    }
+                    data2.children.push({ name: j, tooltip })
+                }
+                data.children.push(data2)
+            }
+            return [data]
+        }
+    }
+}
+</script>
+<style scoped>
+.fullscreen {
+    margin-top: 20px;
+}
+h3 {
+    font-size: 25px;
+    line-height: 40px;
+}
+.code {
+    width: 100%;
+    margin: 0 auto;
+}
+.chart {
+    width: 100%;
+    height: 800px;
+    margin-bottom: 20px;
+    border: solid 1px #ccc;
+}
+.search {
+    width: 360px;
+}
+.code.opcode {
+    white-space: inherit;
+}
+.source-code {
+    max-width: 95%;
+    min-width: 360px;
+    margin: 0 auto;
+    margin-top: 10px;
+}
+.title {
+    font-size: 20px;
+    line-height: 40px;
+}
+.form {
+    padding: 50px 20px 20px 20px;
+    display: flex;
+    justify-items: center;
+    align-content: center;
+}
+</style>
