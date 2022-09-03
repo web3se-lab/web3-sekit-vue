@@ -1,7 +1,6 @@
 {
-    "name": "smartnn-frontend",
+    "name": "smartintent-vue",
     "version": "1.0.0",
-    "author": "desearcher",
     "private": true,
     "scripts": {
         "dev": "nuxt",

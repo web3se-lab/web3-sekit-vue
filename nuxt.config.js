@@ -7,7 +7,7 @@ export default {
 
     // Global page headers: https://go.nuxtjs.dev/config-head
     head: {
-        title: 'web3-crack-vue',
+        title: 'Smart Intent',
         htmlAttrs: {
             lang: 'en'
         },
@@ -41,12 +41,10 @@ export default {
         // https://go.nuxtjs.dev/bootstrap
         'bootstrap-vue/nuxt'
     ],
-    router: {
-        base: '/smartvue'
+    router:{
+        base:'/smartvue'
     },
-    generate: {
-        subFolders: false
-    },
+
     // Build Configuration: https://go.nuxtjs.dev/config-build
     build: {}
 }

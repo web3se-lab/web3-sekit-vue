@@ -1,13 +1,13 @@
 <template>
     <div>
         <b-navbar toggleable="lg" type="dark" variant="primary">
-            <b-navbar-brand href="#">Web3 Crack</b-navbar-brand>
+            <b-navbar-brand href="#">Smart Intent</b-navbar-brand>
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
             <b-collapse id="nav-collapse" is-nav>
                 <b-navbar-nav>
                     <b-nav-item href="/">Home</b-nav-item>
                     <b-nav-item href="/highlight">Highlight</b-nav-item>
-                    <b-nav-item href="/evaluate">Evalution</b-nav-item>
+                    <b-nav-item href="/evaluate">Evaluation</b-nav-item>
                 </b-navbar-nav>
 
                 <!-- Right aligned nav items -->
@@ -48,11 +48,11 @@
                     </div>
                 </div>
                 <div v-if="tab === 1">
-                    <h3>Tree by SolCodeMap</h3>
+                    <h3>SolCodeTree</h3>
                     <v-chart class="chart" :option="option3" />
-                    <h3>Tree by ABI</h3>
+                    <h3>ABI Tree</h3>
                     <v-chart class="chart" :option="option1" />
-                    <h3>Tree by MethodIdentifiers</h3>
+                    <h3>MethodIdentifiers Tree</h3>
                     <v-chart class="chart" :option="option2" />
                 </div>
                 <div v-if="tab === 2">
@@ -83,7 +83,7 @@ export default {
             tab: 0,
             id: '',
             address: '',
-            keyword: '',
+            keyword: '1',
             sourceCode: null,
             opCode: null,
             tree: '',
@@ -91,6 +91,9 @@ export default {
             option2: $.getObject(option),
             option3: $.getObject(option)
         }
+    },
+    mounted() {
+        this.loadData()
     },
     methods: {
         async loadData() {
@@ -172,7 +175,7 @@ export default {
             }
             return [data]
         },
-        // SolCodeMap
+        // SolCodeTree
         getTree3(map) {
             const label = {
                 align: 'center',
