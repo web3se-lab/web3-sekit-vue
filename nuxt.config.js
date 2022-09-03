@@ -1,6 +1,6 @@
 export default {
     // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
-    ssr: true,
+    ssr: false,
 
     // Target: https://go.nuxtjs.dev/config-target
     target: 'static',
@@ -24,11 +24,7 @@ export default {
     css: ['~/static/css/style.css'],
 
     // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-    plugins: [
-        { src: '~/plugins/highlight', ssr: false },
-        { src: '~/plugins/echarts', ssr: false },
-        { src: '~/plugins/vis', ssr: false }
-    ],
+    plugins: ['~/plugins/echarts', '~/plugins/vis'],
 
     // Auto import components: https://go.nuxtjs.dev/config-components
     components: true,
@@ -47,9 +43,5 @@ export default {
     ],
     router: {
         base: '/smartvue'
-    },
-    generate: {
-        subFolders: false
-    },
-    build: {}
+    }
 }
