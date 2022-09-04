@@ -5,9 +5,9 @@
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
             <b-collapse id="nav-collapse" is-nav>
                 <b-navbar-nav>
-                    <b-nav-item active href="/">Home</b-nav-item>
-                    <b-nav-item href="/highlight">Highlight</b-nav-item>
-                    <b-nav-item href="/evaluate">Evaluation</b-nav-item>
+                    <b-nav-item active>Home</b-nav-item>
+                    <b-nav-item href="highlight">Highlight</b-nav-item>
+                    <b-nav-item href="evaluate">Evaluation</b-nav-item>
                 </b-navbar-nav>
 
                 <!-- Right aligned nav items -->
@@ -70,7 +70,7 @@
 
 <script>
 import { component as VueCodeHighlight } from 'vue-code-highlight'
-import 'vue-code-highlight/themes/prism-okaidia.css'
+import 'prism-themes/themes/prism-shades-of-purple.css'
 import 'prismjs/components/prism-solidity'
 import $ from '~/utils/tool'
 import option from '~/utils/option'

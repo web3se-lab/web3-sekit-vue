@@ -20,6 +20,7 @@
         "core-js": "^3.19.3",
         "echarts": "^5.3.3",
         "nuxt": "^2.15.8",
+        "prism-themes": "^1.9.0",
         "prismjs": "^1.29.0",
         "random-hex": "^1.0.2",
         "uniqolor": "^1.0.2",
