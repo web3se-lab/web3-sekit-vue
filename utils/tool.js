@@ -61,5 +61,6 @@ export default {
     getFunctionName(functionCode) {
         const word = this.nWord(functionCode, 1)
         return word
-    }
+    },
+    API: URL
 }

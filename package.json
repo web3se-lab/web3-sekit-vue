@@ -23,6 +23,7 @@
         "prism-themes": "^1.9.0",
         "prismjs": "^1.29.0",
         "random-hex": "^1.0.2",
+        "tf-kmeans-browser": "^1.1.1",
         "uniqolor": "^1.0.2",
         "vis-network": "^9.1.2",
         "vue": "^2.6.14",

@@ -1,7 +1,10 @@
 <template>
     <div>
-        <b-navbar toggleable="lg" type="dark" variant="primary">
-            <b-navbar-brand href="#">Smart Intent</b-navbar-brand>
+        <b-navbar toggleable="lg" type="dark" variant="primary" sticky>
+            <b-navbar-brand href="#" class="logo">
+                SmartIntentNN
+                <b-badge class="version" variant="danger">Alpha v0.1</b-badge>
+            </b-navbar-brand>
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
             <b-collapse id="nav-collapse" is-nav>
                 <b-navbar-nav>
@@ -30,15 +33,27 @@
         </b-navbar>
         <div class="fullscreen">
             <div v-show="id && address" class="info text-center">
-                <p>Contract ID: {{ id }}</p>
-                <p>Contract Address: {{ address }}</p>
+                <p>
+                    Smart Contract ID: <b>{{ id }}</b>
+                </p>
+                <p>
+                    Smart Contract Address: <b>{{ address }}</b>
+                </p>
             </div>
             <div v-if="sourceCode" class="source-code">
-                <div>
+                <PredictModal
+                    v-show="showModal"
+                    :id="id"
+                    :address="address"
+                    :status="showModal"
+                    @close="showModal = false"
+                />
+                <div class="text-center">
                     <b-button-group>
-                        <b-button variant="success" @click="tab = 0">Context</b-button>
-                        <b-button variant="primary" @click="tab = 1">CCTree</b-button>
-                        <b-button variant="warning" @click="tab = 2">OpCode</b-button>
+                        <b-button variant="success" @click="tab = 0">Context 📜</b-button>
+                        <b-button variant="primary" @click="tab = 1">CCTree 🌲</b-button>
+                        <b-button variant="warning" @click="tab = 2">OpCode 🔧</b-button>
+                        <b-button variant="danger" @click="showModal = true">Predict 👍</b-button>
                     </b-button-group>
                 </div>
                 <div v-if="tab === 0">
@@ -65,6 +80,9 @@
                 </div>
             </div>
         </div>
+        <footer class="text-center footer">
+            Powered by <a href="https://www.tensorflow.org/js" target="_blank">Tensorflow.js</a>
+        </footer>
     </div>
 </template>
 
@@ -92,6 +110,7 @@ export default {
             id: '',
             address: '',
             keyword: '1',
+            showModal: false,
             sourceCode: null,
             opCode: null,
             tree: '',
@@ -224,6 +243,7 @@ export default {
 <style scoped>
 .fullscreen {
     margin-top: 20px;
+    min-height: 90vh;
 }
 h3 {
     font-size: 25px;
@@ -259,5 +279,17 @@ h3 {
     display: flex;
     justify-items: center;
     align-content: center;
+}
+.footer {
+    padding: 20px 0;
+}
+.logo {
+    position: relative;
+}
+.version {
+    transform: scale(0.65);
+    position: absolute;
+    right: -50px;
+    top: -5px;
 }
 </style>
