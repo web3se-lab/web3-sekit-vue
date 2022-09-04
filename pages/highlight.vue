@@ -11,8 +11,11 @@
                 />
             </div>
             <div class="list">
-                <div v-for="(item, index) in list" :key="index">
-                    {{ item.fun }}
+                <h3>Rank List DESC</h3>
+                <div class="content">
+                    <div v-for="(item, index) in list" :key="index">
+                        {{ item.fun }}
+                    </div>
                 </div>
             </div>
             <div class="tool">
@@ -195,13 +198,21 @@ export default {
 }
 .list {
     position: fixed;
-    left: 10px;
-    top: 10px;
-    height: 100vh;
-    width: 220px;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 20vw;
+    min-width: 100px;
+    max-width: 250px;
     font-size: 12px;
-    overflow: scroll;
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
     padding: 10px;
+    margin: auto 0;
+}
+.content {
+    width: 104%;
+    height: 90vh;
+    overflow: scroll;
 }
 </style>

@@ -88,7 +88,7 @@
 
 <script>
 import { component as VueCodeHighlight } from 'vue-code-highlight'
-import 'prism-themes/themes/prism-shades-of-purple.css'
+import 'prismjs/themes/prism-okaidia.css'
 import 'prismjs/components/prism-solidity'
 import $ from '~/utils/tool'
 import option from '~/utils/option'
@@ -266,7 +266,7 @@ h3 {
     white-space: inherit;
 }
 .source-code {
-    width: 95%;
+    width: 90%;
     margin: 0 auto;
     margin-top: 10px;
 }

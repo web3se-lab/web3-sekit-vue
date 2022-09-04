@@ -73,10 +73,11 @@ export default {
         },
         predict() {
             this.msg(`Start predicting...Primary key: ${this.id}<br />Address: ${this.address}`)
+            this.msg('===============Context Embed=================')
+            this.msg('Embedding Smart Contracts First...')
             $.get('code/embedding', { key: this.id })
                 .then(res => {
                     if (!this.status) throw new Error('User manually stops predicting!')
-                    this.msg('===============Context Embed=================')
                     this.msg('Smart Contract context embedded...')
                     return res
                 })

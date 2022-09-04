@@ -1,8 +1,8 @@
 <template>
     <div class="evaluate">
-        <h1 class="text-center">BaseLines</h1>
+        <h1 class="text-center">Evaluation</h1>
         <div class="settings">
-            <h2>Experimental Settings</h2>
+            <h2>Experimental Configurations</h2>
             <p>
                 <span>Trained dataset:</span>
                 1, 10000
@@ -44,7 +44,7 @@
                 0.0
             </p>
         </div>
-        <h2>Results</h2>
+        <h2>Result Charts</h2>
         <b-spinner v-show="loading" variant="primary" type="grow" label="Spinning"></b-spinner>
         <b-row>
             <b-col v-for="(item, index) in options" :key="index" md="3">
