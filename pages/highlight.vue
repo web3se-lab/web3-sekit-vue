@@ -40,6 +40,8 @@
 </template>
 <script>
 import uniqolor from 'uniqolor'
+import KMeans from 'tf-kmeans-browser'
+import * as tf from '@tensorflow/tfjs'
 import $ from '~/utils/tool'
 const DISTANCE = 0.21
 export default {
@@ -122,13 +124,50 @@ export default {
                 this.loading = true
                 this.nodes = []
                 this.edges = []
-                const res = await $.get('data/highPredict', { key: this.keyword })
-                this.list = res.data
-                this.addCenters(res.k)
-                this.addNodes(res.data)
+                const data = await $.get('code/embedding', { key: this.keyword })
+
+                let kmeans = localStorage.getItem('kmeans')
+                if (!kmeans) {
+                    kmeans = await $.get('code/kmeans')
+                    localStorage.setItem('kmeans', JSON.stringify(kmeans))
+                } else kmeans = JSON.parse(kmeans)
+                kmeans.distanceFunction = KMeans.cosineDistance
+                kmeans = new KMeans(kmeans)
+
+                const fun = []
+                const map = {}
+                for (const i in data)
+                    for (const j in data[i]) {
+                        fun.push(data[i][j])
+                        map[data[i][j]] = `${i}/${j}`
+                    }
+                const xs = tf.tensor(fun)
+                console.log('Input', xs)
+                const ys = kmeans.predict(xs)
+                console.log('Output', ys)
+                console.log('Category Index', ys.index.arraySync())
+                console.log('Category Distance', ys.distance.arraySync())
+                console.log('Category Center')
+                ys.center.print()
+                let funObj = []
+                for (const i in fun)
+                    funObj.push({
+                        fun: fun[i],
+                        distance: ys.distance.arraySync()[i],
+                        index: ys.index.arraySync()[i]
+                    })
+                funObj = funObj.sort((f1, f2) => f2.distance - f1.distance)
+                funObj = funObj.map(item => {
+                    item.fun = map[item.fun]
+                    return item
+                })
+
+                this.list = funObj
+                this.addCenters(kmeans.k)
+                this.addNodes(funObj)
             } catch (e) {
                 this.$bvToast.toast(e.message, {
-                    title: 'Error Predict Request',
+                    title: 'Error Intent Highlight Predict',
                     variant: 'danger',
                     solid: true
                 })
