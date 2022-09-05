@@ -212,6 +212,11 @@ export default {
 .list h3 {
     font-size: 1.5rem;
 }
+.content {
+    overflow: scroll;
+    height: 93vh;
+    width: 108%;
+}
 @media screen and (max-width: 900px) {
     .list {
         bottom: auto;
@@ -228,10 +233,5 @@ export default {
     .content {
         height: 100%;
     }
-}
-.content {
-    overflow: scroll;
-    height: 93vh;
-    width: 108%;
 }
 </style>
