@@ -79,9 +79,8 @@ export default {
         },
         predict() {
             this.loading = true
-            this.msg(
-                `Primary key: ${this.id}</br>Address: ${this.address}</br>...Start predicting...`
-            )
+            this.msg(`Primary key: ${this.id}</br>Address: ${this.address}`)
+            this.msg('Start predicting...Please wait...')
             this.msg('===============Context Embed=================')
             this.msg('Embedding Smart Contracts First...')
             $.get('code/embedding', { key: this.id })
@@ -127,12 +126,12 @@ export default {
                     return xs
                 })
                 .then(async xs => {
-                    this.msg('=================DNN Predict==================')
+                    this.msg('=================DNN Predict=================')
                     this.msg('DNN (with BiLSTM) model is loading...')
                     const model = await tf.loadLayersModel('mymodel_bilstm_high_scale/model.json')
                     this.msg('DNN model is predicting intents...')
                     const ys = model.predict(tf.tensor([xs])).arraySync()[0]
-                    this.msg('==================Intents Predicted==================')
+                    this.msg('===============Intents Predicted================')
                     for (const i in ys)
                         this.msg(
                             `${
@@ -141,7 +140,7 @@ export default {
                                     : '<span style="color: #28a745;">'
                             }${intent[i]} ${ys[i]}${ys[i] >= 0.5 ? '</span>' : ''}`
                         )
-                    this.msg('=====================END========================')
+                    this.msg('==================END======================')
                 })
                 .catch(e => {
                     console.error(e)

@@ -62,7 +62,7 @@
                         <b-button variant="danger" @click="showModal = true">Predict 👍</b-button>
                     </b-button-group>
                 </div>
-                <div v-if="tab === 0">
+                <div v-if="tab === 0" class="tab-code">
                     <div v-for="(item, index) in sourceCode" :key="index" class="source-code">
                         <h3>{{ index }}</h3>
                         <vue-code-highlight language="solidity">
@@ -70,7 +70,7 @@
                         </vue-code-highlight>
                     </div>
                 </div>
-                <div v-if="tab === 1">
+                <div v-if="tab === 1" class="tab-tree">
                     <h3>Code Tree</h3>
                     <v-chart class="chart" :option="option1" />
                     <h3>ABI Tree</h3>
@@ -78,7 +78,7 @@
                     <h3>MethodIdentifiers Tree</h3>
                     <v-chart class="chart" :option="option3" />
                 </div>
-                <div v-if="tab === 2">
+                <div v-if="tab === 2" class="tab-opcode">
                     <div v-for="(item, index) in opCode" :key="index" class="source-code">
                         <h3>{{ index }}</h3>
                         <p>{{ item }}</p>
@@ -198,7 +198,7 @@ export default {
         getTree(tree, type = 1) {
             const data = { name: 'Smart Contract', children: [], itemStyle: { color: '#000' } }
             for (const i in tree) {
-                const data2 = { name: i, children: [] }
+                const data2 = { name: i, children: [], collapsed: Object.keys(tree[i]).length > 15 }
                 for (const j in tree[i])
                     data2.children.push({
                         name: type === 2 ? `${tree[i][j].type} ${tree[i][j].name || ''}` : j,
@@ -248,9 +248,14 @@ h3 {
     width: 100%;
     margin: 0 auto;
 }
+.tab-tree {
+    width: 900px;
+    margin: 0 auto;
+}
 .chart {
-    width: 100%;
-    height: 800px;
+    width: 900px;
+    height: 900px;
+    margin: 0 auto;
     margin-bottom: 20px;
     border: solid 1px #ccc;
 }
