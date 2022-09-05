@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 let URL = 'http://localhost:8080'
-if (process.env.NODE_ENV !== 'development') URL = 'http://47.100.113.103'
+if (process.env.NODE_ENV !== 'development') URL = 'https://smart.devil.ren'
 
 export default {
     async get(ctl, params) {
