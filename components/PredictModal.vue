@@ -2,9 +2,10 @@
     <transition name="fade">
         <div class="predict-modal">
             <div class="box-bg">
-                <button type="button" class="close" @click="close" aria-label="Close">
+                <button v-if="!loading" type="button" class="close" @click="close">
                     <span aria-hidden="true">&times;</span>
                 </button>
+                <b-spinner v-else variant="primary" class="close" type="grow" label="Spinning" />
                 <div ref="line" class="modal-box">
                     <h1>Predict Smart Contract Intent</h1>
                     <h5>Powered by Tensorflow.js, deep learning is running on your Browser!</h5>
@@ -45,7 +46,8 @@ export default {
     data() {
         return {
             url: `${$.API}/data/sourceCodeRisk?key=`,
-            msgs: []
+            msgs: [],
+            loading: false
         }
     },
     watch: {
@@ -76,6 +78,7 @@ export default {
             this.$emit('close')
         },
         predict() {
+            this.loading = true
             this.msg(
                 `Primary key: ${this.id}</br>Address: ${this.address}</br>...Start predicting...`
             )
@@ -148,6 +151,7 @@ export default {
                         solid: true
                     })
                 })
+                .finally(() => (this.loading = false))
         }
     }
 }
