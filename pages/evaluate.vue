@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import * as echarts from 'echarts'
+import { util } from 'echarts/core'
 import $ from '~/utils/tool'
 import option2 from '~/utils/option2'
 import option3 from '~/utils/option3'
@@ -127,7 +127,7 @@ export default {
             const datasetWithFilters = []
             const seriesList = []
             const option = $.getObject(option2)
-            echarts.util.each(evaluates, evaluate => {
+            util.each(evaluates, evaluate => {
                 const datasetId = 'dataset_' + evaluate
                 datasetWithFilters.push({
                     id: datasetId,

@@ -199,9 +199,8 @@ export default {
     font-size: 1rem;
     line-height: 1.2rem;
 }
-.close span {
+.close {
     color: #fff;
-    font-size: 40px;
     position: absolute;
     right: 15px;
     top: 10px;
