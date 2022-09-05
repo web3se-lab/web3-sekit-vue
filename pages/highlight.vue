@@ -201,18 +201,37 @@ export default {
     left: 0;
     top: 0;
     bottom: 0;
-    width: 20vw;
-    min-width: 100px;
+    width: 20rem;
     max-width: 250px;
     font-size: 12px;
     background: rgba(0, 0, 0, 0.6);
     color: #fff;
-    padding: 10px;
     margin: auto 0;
+    padding: 10px;
+}
+.list h3 {
+    font-size: 1.5rem;
+}
+@media screen and (max-width: 900px) {
+    .list {
+        bottom: auto;
+        top: 0;
+        left: 0;
+        right: 0;
+        max-width: 100%;
+        height: 150px;
+        width: 100%;
+    }
+    .list h3 {
+        display: none;
+    }
+    .content {
+        height: 100%;
+    }
 }
 .content {
-    width: 104%;
-    height: 90vh;
     overflow: scroll;
+    height: 93vh;
+    width: 108%;
 }
 </style>

@@ -47,11 +47,11 @@
         <h2>Result Charts</h2>
         <b-spinner v-show="loading" variant="primary" type="grow" label="Spinning"></b-spinner>
         <b-row>
-            <b-col v-for="(item, index) in options" :key="index" md="3">
+            <b-col v-for="(item, index) in options" :key="index" lg="3" md="6">
                 <h3>{{ item.charttitle }}</h3>
                 <v-chart class="chart" :option="item" />
             </b-col>
-            <b-col md="6">
+            <b-col v-show="!loading" lg="12">
                 <h3>Best Model</h3>
                 <v-chart class="chart-r" :option="option3" />
             </b-col>
@@ -81,7 +81,7 @@ export default {
         async loadData() {
             try {
                 this.loading = true
-                const res = await $.get('data/evaluate', { key: this.keyword })
+                const res = await $.get('data/evaluate')
                 for (const i in res) {
                     const data = [['value', 'evaluation', 'num']]
                     for (const j in res[i].data) {
@@ -97,7 +97,7 @@ export default {
                 }
             } catch (e) {
                 this.$bvToast.toast(e.message, {
-                    title: 'Error Predict Request',
+                    title: 'Error Evaluation Request',
                     variant: 'danger',
                     solid: true
                 })
@@ -106,7 +106,6 @@ export default {
             }
         },
         radar(data) {
-            console.log(data)
             const f1 = []
             const ac = []
             const pr = []

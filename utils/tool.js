@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-let URL = 'http://47.100.113.103'
+let URL = 'http://localhost:8080'
 if (process.env.NODE_ENV !== 'development') URL = 'http://47.100.113.103'
 
 export default {

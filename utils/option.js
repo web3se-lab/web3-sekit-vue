@@ -40,6 +40,7 @@ export default {
                 // align: 'right'
                 // fontSize: 18
             },
+            tooltip: {},
             leaves: {
                 label: {
                     position: 'right',

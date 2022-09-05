@@ -19,6 +19,7 @@
         "bootstrap-vue": "^2.21.2",
         "core-js": "^3.19.3",
         "echarts": "^5.3.3",
+        "flexible.js": "^2.0.19",
         "nuxt": "^2.15.8",
         "prism-themes": "^1.9.0",
         "prismjs": "^1.29.0",

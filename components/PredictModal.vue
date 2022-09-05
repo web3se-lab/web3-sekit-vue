@@ -1,20 +1,24 @@
 <template>
-    <div class="predict-modal">
-        <div class="box-bg">
-            <button type="button" class="close" @click="close" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            <div ref="line" class="modal-box">
-                <h1>Predict Smart Contract Intent</h1>
-                <h5>Powered by Tensorflow.js, deep learning is running on your Browser!</h5>
-                <br />
-                <p v-for="(item, index) in msgs" :key="index" v-html="item"></p>
-                <p>
-                    <a target="_blank" :href="url + address">See the ground truth: {{ address }}</a>
-                </p>
+    <transition name="fade">
+        <div class="predict-modal">
+            <div class="box-bg">
+                <button type="button" class="close" @click="close" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div ref="line" class="modal-box">
+                    <h1>Predict Smart Contract Intent</h1>
+                    <h5>Powered by Tensorflow.js, deep learning is running on your Browser!</h5>
+                    <br />
+                    <p v-for="(item, index) in msgs" :key="index" v-html="item"></p>
+                    <p>
+                        <a target="_blank" :href="url + address"
+                            >See the ground truth: {{ address }}</a
+                        >
+                    </p>
+                </div>
             </div>
         </div>
-    </div>
+    </transition>
 </template>
 <script>
 import KMeans from 'tf-kmeans-browser'
@@ -72,7 +76,9 @@ export default {
             this.$emit('close')
         },
         predict() {
-            this.msg(`Start predicting...Primary key: ${this.id}<br />Address: ${this.address}`)
+            this.msg(
+                `Primary key: ${this.id}</br>Address: ${this.address}</br>...Start predicting...`
+            )
             this.msg('===============Context Embed=================')
             this.msg('Embedding Smart Contracts First...')
             $.get('code/embedding', { key: this.id })
@@ -123,7 +129,7 @@ export default {
                     const model = await tf.loadLayersModel('mymodel_bilstm_high_scale/model.json')
                     this.msg('DNN model is predicting intents...')
                     const ys = model.predict(tf.tensor([xs])).arraySync()[0]
-                    this.msg('================Intents Predicted================')
+                    this.msg('==================Intents Predicted==================')
                     for (const i in ys)
                         this.msg(
                             `${
@@ -132,6 +138,7 @@ export default {
                                     : '<span style="color: #28a745;">'
                             }${intent[i]} ${ys[i]}${ys[i] >= 0.5 ? '</span>' : ''}`
                         )
+                    this.msg('=====================END========================')
                 })
                 .catch(e => {
                     console.error(e)
@@ -147,7 +154,7 @@ export default {
 </script>
 <style scoped>
 .predict-modal {
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.3);
     position: fixed;
     width: 100vw;
     height: 100vh;
@@ -159,6 +166,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+    backdrop-filter: blur(0.3rem);
 }
 .modal-box {
     height: 100%;
@@ -173,11 +181,19 @@ export default {
     min-width: 370px;
     border-radius: 1rem;
     height: 500px;
-    background: #000;
+    background: rgba(0, 0, 0, 0.8);
     position: relative;
+}
+.modal-box h1 {
+    font-size: 2.5rem;
 }
 .modal-box h5 {
     color: #ffc107;
+    font-size: 1.2rem;
+}
+.modal-box p {
+    font-size: 1rem;
+    line-height: 1.2rem;
 }
 .close span {
     color: #fff;
@@ -185,5 +201,13 @@ export default {
     position: absolute;
     right: 15px;
     top: 10px;
+}
+.fade-enter-active,
+.fade-leave-active {
+    transition: all 0.5s;
+}
+.fade-enter,
+.fade-leave-to {
+    opacity: 0;
 }
 </style>
