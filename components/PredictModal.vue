@@ -26,6 +26,7 @@ import KMeans from 'tf-kmeans-browser'
 import * as tf from '@tensorflow/tfjs'
 import $ from '~/utils/tool'
 import intent from '~/utils/type'
+import json from '~/utils/kmeans-model.json'
 
 export default {
     name: 'PredictModal',
@@ -89,16 +90,11 @@ export default {
                     this.msg('Smart Contract context embedded...')
                     return res
                 })
-                .then(async res => {
+                .then(res => {
                     this.msg('===============Intent Highlight=================')
                     this.msg('Intent Highlight K-means model is loading...')
-                    let kmeans = localStorage.getItem('kmeans')
-                    if (!kmeans) {
-                        kmeans = await $.get('code/kmeans')
-                        localStorage.setItem('kmeans', JSON.stringify(kmeans))
-                    } else kmeans = JSON.parse(kmeans)
-                    kmeans.distanceFunction = KMeans.cosineDistance
-                    kmeans = new KMeans(kmeans)
+                    json.distanceFunction = KMeans.cosineDistance
+                    const kmeans = new KMeans(json)
                     this.msg(`Intent Highlight K-means is loaded...k=${kmeans.k}`)
                     const xs = []
                     for (const i in res) for (const j in res[i]) xs.push(res[i][j])

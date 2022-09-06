@@ -43,6 +43,7 @@ import uniqolor from 'uniqolor'
 import KMeans from 'tf-kmeans-browser'
 import * as tf from '@tensorflow/tfjs'
 import $ from '~/utils/tool'
+import json from '~/utils/kmeans-model.json'
 const DISTANCE = 0.21
 export default {
     name: 'HighlightPage',
@@ -126,13 +127,8 @@ export default {
                 this.edges = []
                 const data = await $.get('code/embedding', { key: this.keyword })
 
-                let kmeans = localStorage.getItem('kmeans')
-                if (!kmeans) {
-                    kmeans = await $.get('code/kmeans')
-                    localStorage.setItem('kmeans', JSON.stringify(kmeans))
-                } else kmeans = JSON.parse(kmeans)
-                kmeans.distanceFunction = KMeans.cosineDistance
-                kmeans = new KMeans(kmeans)
+                json.distanceFunction = KMeans.cosineDistance
+                const kmeans = new KMeans(json)
 
                 const fun = []
                 const map = {}
