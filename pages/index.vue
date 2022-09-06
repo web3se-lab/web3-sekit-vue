@@ -178,6 +178,11 @@ export default {
                 this.sourceCode = null
                 this.address = ''
                 this.opCode = null
+                this.$bvToast.toast(e.message, {
+                    title: 'Error Query',
+                    variant: 'danger',
+                    solid: true
+                })
             } finally {
                 this.loading = false
             }
