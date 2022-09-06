@@ -32,7 +32,7 @@
             </b-collapse>
         </b-navbar>
 
-        <div v-if="sourceCode" class="fullscreen">
+        <div class="fullscreen">
             <div class="info text-center">
                 <b-spinner
                     v-show="loading"
@@ -64,7 +64,7 @@
                     :status="showModal"
                     @close="showModal = false"
                 />
-                <div v-if="tab === 0" class="tab-code">
+                <div v-if="tab === 0 && sourceCode" class="tab-code">
                     <div v-for="(item, index) in sourceCode" :key="index" class="source-code">
                         <h3>{{ index }}</h3>
                         <vue-code-highlight language="solidity">
@@ -80,7 +80,7 @@
                     <h3>MethodIdentifiers Tree</h3>
                     <v-chart class="chart" :option="option3" />
                 </div>
-                <div v-if="tab === 2" class="tab-opcode">
+                <div v-if="tab === 2 && opCode" class="tab-opcode">
                     <div v-for="(item, index) in opCode" :key="index" class="source-code">
                         <h3>{{ index }}</h3>
                         <p>{{ item }}</p>
