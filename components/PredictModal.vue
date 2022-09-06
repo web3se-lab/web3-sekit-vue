@@ -140,7 +140,7 @@ export default {
                                     : '<span style="color: #28a745;">'
                             }${intent[i]} ${ys[i]}${ys[i] >= 0.5 ? '</span>' : ''}`
                         )
-                    this.msg('==================END======================')
+                    this.msg('===================END======================')
                 })
                 .catch(e => {
                     console.error(e)

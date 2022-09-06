@@ -31,6 +31,7 @@
                 </b-navbar-nav>
             </b-collapse>
         </b-navbar>
+
         <div v-if="sourceCode" class="fullscreen">
             <div class="info text-center">
                 <b-spinner
@@ -46,14 +47,8 @@
                     Smart Contract Address: <b>{{ address }}</b>
                 </p>
             </div>
-            <div v-if="sourceCode" class="source-code">
-                <PredictModal
-                    v-show="showModal"
-                    :id="id"
-                    :address="address"
-                    :status="showModal"
-                    @close="showModal = false"
-                />
+
+            <div class="content">
                 <div class="text-center">
                     <b-button-group>
                         <b-button variant="success" @click="tab = 0">Context 📜</b-button>
@@ -62,6 +57,13 @@
                         <b-button variant="danger" @click="showModal = true">Predict 👍</b-button>
                     </b-button-group>
                 </div>
+                <PredictModal
+                    v-show="showModal"
+                    :id="id"
+                    :address="address"
+                    :status="showModal"
+                    @close="showModal = false"
+                />
                 <div v-if="tab === 0" class="tab-code">
                     <div v-for="(item, index) in sourceCode" :key="index" class="source-code">
                         <h3>{{ index }}</h3>
@@ -239,29 +241,37 @@ export default {
 </script>
 <style scoped>
 .fullscreen {
-    margin-top: 20px;
-    min-height: 90vh;
+    min-height: 85vh;
 }
 h3 {
-    font-size: 25px;
-    line-height: 40px;
+    font-size: 1.5rem;
+    margin: 1rem 0;
+}
+.info,
+.content {
+    margin-top: 1rem;
 }
 .info p {
-    font-size: 0.9rem;
+    margin: 0;
+    padding: 0.1rem 0;
+    font-size: 0.95rem;
 }
 .code {
     width: 100%;
     margin: 0 auto;
 }
 .tab-tree {
-    width: 900px;
     margin: 0 auto;
+    width: 95%;
+    max-width: 800px;
+    margin-top: 1rem;
 }
 .chart {
-    width: 900px;
-    height: 900px;
+    width: 100%;
+    max-width: 900px;
+    height: 95vw;
+    max-height: 800px;
     margin: 0 auto;
-    margin-bottom: 20px;
     border: solid 1px #ccc;
 }
 .search {
