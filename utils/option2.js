@@ -1,5 +1,6 @@
 export default {
-    color: ['#56A3F1', '#14d742', '#FFE434', '#FF917C'],
+    // color: ['#56A3F1', '#14d742', '#FFE434', '#FF917C'],
+    color: ['#0094FF', '#51EA44', '#FFFF09', '#FF917C'],
     animationDuration: 8000,
     dataset: [
         {

@@ -48,7 +48,7 @@
         <b-spinner v-show="loading" variant="primary" type="grow" label="Spinning"></b-spinner>
         <b-row>
             <b-col v-for="(item, index) in options" :key="index" lg="3" md="6">
-                <h3>{{ item.charttitle }}</h3>
+                <h3>{{ item.chartTitle }}</h3>
                 <v-chart class="chart" :option="item" />
             </b-col>
             <b-col v-show="!loading" lg="12">
@@ -176,7 +176,7 @@ export default {
                     ...datasetWithFilters
                 ]
                 option.series = seriesList
-                option.charttitle = title
+                option.chartTitle = title
             })
             this.options.push(option)
         }

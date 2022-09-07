@@ -22,11 +22,8 @@
     </transition>
 </template>
 <script>
-import KMeans from 'tf-kmeans-browser'
-import * as tf from '@tensorflow/tfjs'
 import $ from '~/utils/tool'
 import intent from '~/utils/type'
-import json from '~/utils/kmeans-model.json'
 
 export default {
     name: 'PredictModal',
@@ -84,6 +81,7 @@ export default {
             this.msg('Start predicting...Please wait...')
             this.msg('===============Context Embed=================')
             this.msg('Embedding Smart Contracts First...')
+
             $.get('code/embedding', { key: this.id })
                 .then(res => {
                     if (!this.status) throw new Error('User manually stops predicting!')
@@ -93,13 +91,11 @@ export default {
                 .then(res => {
                     this.msg('===============Intent Highlight=================')
                     this.msg('Intent Highlight K-means model is loading...')
-                    json.distanceFunction = KMeans.cosineDistance
-                    const kmeans = new KMeans(json)
-                    this.msg(`Intent Highlight K-means is loaded...k=${kmeans.k}`)
+                    this.msg(`Intent Highlight K-means is loaded...k=${$.kmeans.k}`)
                     const xs = []
                     for (const i in res) for (const j in res[i]) xs.push(res[i][j])
-                    const tx = tf.tensor(xs)
-                    const ty = kmeans.predict(tx).distance.arraySync()
+                    const tx = $.tf.tensor(xs)
+                    const ty = $.kmeans.predict(tx).distance.arraySync()
                     this.msg(`Distances are predicted`)
                     const data = []
                     for (const i in xs)
@@ -115,7 +111,7 @@ export default {
                         xs.push(
                             item.distance < 0.2
                                 ? item.vector
-                                : tf.tensor(item.vector).mul(tf.scalar(2)).arraySync()
+                                : $.tf.tensor(item.vector).mul($.tf.scalar(2)).arraySync()
                         )
                     }
                     this.msg(`Embeddings are scaled X2`)
@@ -124,9 +120,9 @@ export default {
                 .then(async xs => {
                     this.msg('=================DNN Predict=================')
                     this.msg('DNN (with BiLSTM) model is loading...')
-                    const model = await tf.loadLayersModel('mymodel_bilstm_high_scale/model.json')
+                    const model = await $.tf.loadLayersModel('mymodel_bilstm_high_scale/model.json')
                     this.msg('DNN model is predicting intents...')
-                    const ys = model.predict(tf.tensor([xs])).arraySync()[0]
+                    const ys = model.predict($.tf.tensor([xs])).arraySync()[0]
                     this.msg('===============Intents Predicted================')
                     for (const i in ys)
                         this.msg(
@@ -169,17 +165,18 @@ export default {
 }
 .modal-box {
     height: 100%;
-    width: 105.5%;
+    width: 103%;
     overflow-y: scroll;
     color: #fff;
 }
 .box-bg {
-    padding: 30px;
-    width: 70%;
+    padding: 1rem;
+    width: 70vw;
     max-width: 800px;
     min-width: 370px;
     border-radius: 1rem;
-    height: 500px;
+    height: 65vh;
+    max-height: 500px;
     background: rgba(0, 0, 0, 0.8);
     position: relative;
 }

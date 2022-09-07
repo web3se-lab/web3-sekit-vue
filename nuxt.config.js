@@ -13,8 +13,16 @@ export default {
         },
         meta: [
             { charset: 'utf-8' },
-            { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-            { hid: 'description', name: 'description', content: '' },
+            {
+                name: 'viewport',
+                content: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'
+            },
+            {
+                hid: 'description',
+                name: 'description',
+                content:
+                    'SmartIntentNN is a deep learning based tool for smart contract malicious intent detection!'
+            },
             { name: 'format-detection', content: 'telephone=no' }
         ],
         link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
@@ -24,7 +32,12 @@ export default {
     css: ['~/static/css/style.css'],
 
     // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-    plugins: ['~/plugins/echarts', '~/plugins/vis', '~/plugins/flexible'],
+    plugins: [
+        '~/plugins/echarts',
+        '~/plugins/vis',
+        '~/plugins/flexible',
+        '~/plugins/code-highlight'
+    ],
 
     // Auto import components: https://go.nuxtjs.dev/config-components
     components: true,
@@ -41,7 +54,36 @@ export default {
         // https://go.nuxtjs.dev/bootstrap
         'bootstrap-vue/nuxt'
     ],
+    bootstrapVue: {
+        icons: false,
+        directives: false,
+        // bootstrapVueCSS: false,
+        componentPlugins: [
+            'Navbar',
+            'Badge',
+            'Button',
+            'Spinner',
+            'FormInput',
+            'ButtonGroup',
+            'Layout',
+            'Overlay',
+            'FormRadio',
+            'FormSelect',
+            'ToastPlugin'
+        ]
+    },
     router: {
         base: '/smartvue'
+    },
+    build: {
+        optimization: {
+            splitChunks: {
+                minSize: 10000,
+                maxSize: 250000
+            }
+        },
+        babel: {
+            compact: true
+        }
     }
 }

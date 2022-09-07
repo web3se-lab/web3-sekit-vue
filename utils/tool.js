@@ -1,4 +1,8 @@
 import axios from 'axios'
+import * as TF from '@tensorflow/tfjs'
+import KMeans from 'tf-kmeans-browser'
+import kJson from '~/utils/kmeans-model.json'
+kJson.distanceFunction = KMeans.cosineDistance
 
 let URL = 'http://localhost:8080'
 if (process.env.NODE_ENV !== 'development') URL = 'https://smart.devil.ren'
@@ -62,5 +66,7 @@ export default {
         const word = this.nWord(functionCode, 1)
         return word
     },
+    kmeans: new KMeans(kJson),
+    tf: TF,
     API: URL
 }

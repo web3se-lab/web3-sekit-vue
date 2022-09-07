@@ -83,7 +83,7 @@
                 <div v-if="tab === 2 && opCode" class="tab-opcode">
                     <div v-for="(item, index) in opCode" :key="index" class="source-code">
                         <h3>{{ index }}</h3>
-                        <p>{{ item }}</p>
+                        <div class="language-solidity">{{ item }}</div>
                     </div>
                 </div>
             </div>
@@ -113,9 +113,6 @@
 </template>
 
 <script>
-import { component as VueCodeHighlight } from 'vue-code-highlight'
-import 'prismjs/themes/prism-okaidia.css'
-import 'prismjs/components/prism-solidity'
 import $ from '~/utils/tool'
 import option from '~/utils/option'
 /*
@@ -128,15 +125,12 @@ const COLOR5 = '#dc3545'
 
 export default {
     name: 'IndexPage',
-    components: {
-        VueCodeHighlight
-    },
     data() {
         return {
             tab: 0,
             loading: false,
             keyword: '1',
-            id: '',
+            id: 0,
             address: '',
             showModal: false,
             sourceCode: null,

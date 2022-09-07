@@ -5,9 +5,17 @@ import { ToolboxComponent, GridComponent, TooltipComponent } from 'echarts/compo
 
 // import ECharts modules manually to reduce bundle size
 import { CanvasRenderer } from 'echarts/renderers'
-import { TreeChart } from 'echarts/charts'
+import { TreeChart, LineChart, RadarChart } from 'echarts/charts'
 
-use([CanvasRenderer, TreeChart, GridComponent, TooltipComponent, ToolboxComponent])
+use([
+    CanvasRenderer,
+    TreeChart,
+    LineChart,
+    RadarChart,
+    GridComponent,
+    TooltipComponent,
+    ToolboxComponent
+])
 
 // register globally (or you can do it locally)
 Vue.component('VChart', ECharts)

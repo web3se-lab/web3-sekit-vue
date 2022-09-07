@@ -2,7 +2,7 @@
     <div>
         <b-overlay :show="loading" rounded="sm">
             <div class="network-box">
-                <network
+                <vis-network
                     ref="network"
                     class="network"
                     :nodes="nodes"
@@ -40,11 +40,9 @@
 </template>
 <script>
 import uniqolor from 'uniqolor'
-import KMeans from 'tf-kmeans-browser'
-import * as tf from '@tensorflow/tfjs'
 import $ from '~/utils/tool'
-import json from '~/utils/kmeans-model.json'
 const DISTANCE = 0.21
+
 export default {
     name: 'HighlightPage',
     data() {
@@ -127,9 +125,6 @@ export default {
                 this.edges = []
                 const data = await $.get('code/embedding', { key: this.keyword })
 
-                json.distanceFunction = KMeans.cosineDistance
-                const kmeans = new KMeans(json)
-
                 const fun = []
                 const map = {}
                 for (const i in data)
@@ -137,14 +132,8 @@ export default {
                         fun.push(data[i][j])
                         map[data[i][j]] = `${i}/${j}`
                     }
-                const xs = tf.tensor(fun)
-                console.log('Input', xs)
-                const ys = kmeans.predict(xs)
-                console.log('Output', ys)
-                console.log('Category Index', ys.index.arraySync())
-                console.log('Category Distance', ys.distance.arraySync())
-                console.log('Category Center')
-                ys.center.print()
+                const xs = $.tf.tensor(fun)
+                const ys = $.kmeans.predict(xs)
                 let funObj = []
                 for (const i in fun)
                     funObj.push({
@@ -159,7 +148,7 @@ export default {
                 })
 
                 this.list = funObj
-                this.addCenters(kmeans.k)
+                this.addCenters($.kmeans.k)
                 this.addNodes(funObj)
             } catch (e) {
                 this.$bvToast.toast(e.message, {
@@ -226,9 +215,9 @@ export default {
 .tool {
     position: fixed;
     z-index: 9;
-    right: 10px;
-    bottom: 10px;
-    padding: 10px;
+    right: 1rem;
+    bottom: 1rem;
+    padding: 1rem;
     background: rgba(0, 0, 0, 0.1);
 }
 .list {
@@ -267,6 +256,9 @@ export default {
     }
     .content {
         height: 100%;
+    }
+    .tool {
+        left: 1rem;
     }
 }
 </style>
