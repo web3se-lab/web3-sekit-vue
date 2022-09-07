@@ -45,7 +45,9 @@
             </p>
         </div>
         <h2>Result Charts</h2>
-        <b-spinner v-show="loading" variant="primary" type="grow" label="Spinning"></b-spinner>
+        <div v-show="loading" class="text-center">
+            <b-spinner variant="primary" type="grow" label="Spinning"></b-spinner>
+        </div>
         <b-row>
             <b-col v-for="(item, index) in options" :key="index" lg="3" md="6">
                 <h3>{{ item.chartTitle }}</h3>

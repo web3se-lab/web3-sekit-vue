@@ -76,12 +76,16 @@ export default {
         base: '/smartvue'
     },
     build: {
+        analyze: true,
         optimization: {
             splitChunks: {
                 minSize: 10000,
                 maxSize: 250000
             }
         },
+        productionSourceMap: false,
+        productionGzip: true,
+        productionGzipExtensions: ['js', 'css', 'svg'],
         babel: {
             compact: true
         }
