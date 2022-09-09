@@ -51,11 +51,8 @@
         <b-row>
             <b-col v-for="(item, index) in options" :key="index" lg="3" md="6">
                 <h3>{{ item.chartTitle }}</h3>
-                <v-chart class="chart" :option="item" />
-            </b-col>
-            <b-col v-show="!loading" lg="12">
-                <h3>Best Model</h3>
-                <v-chart class="chart-r" :option="option3" />
+                <v-chart class="chart" :option="options[index]" />
+                <v-chart class="chart-r" :option="options2[index]" />
             </b-col>
         </b-row>
     </div>
@@ -72,8 +69,8 @@ export default {
     data() {
         return {
             loading: false,
-            options: [],
-            option3
+            options: [], // line charts
+            options2: [] // radar charts
         }
     },
     mounted() {
@@ -94,8 +91,7 @@ export default {
                         data.push([all.F1, 'F1', parseInt(j) + 1])
                     }
                     this.addOption(res[i].title, data)
-                    if (res[i].title.includes('Dropout'))
-                        this.radar(res[i].data[res[i].data.length - 1])
+                    this.radar(res[i].data[res[i].data.length - 1])
                 }
             } catch (e) {
                 this.$bvToast.toast(e.message, {
@@ -119,10 +115,12 @@ export default {
                 pr.push(data[i].precision)
                 re.push(data[i].recall)
             }
-            this.option3.series[0].data[0].value = ac
-            this.option3.series[0].data[1].value = pr
-            this.option3.series[0].data[2].value = re
-            this.option3.series[0].data[3].value = f1
+            const option = $.getObject(option3)
+            option.series[0].data[0].value = ac
+            option.series[0].data[1].value = pr
+            option.series[0].data[2].value = re
+            option.series[0].data[3].value = f1
+            this.options2.push(option)
         },
         addOption(title, data) {
             const evaluates = ['AC', 'PR', 'RE', 'F1']

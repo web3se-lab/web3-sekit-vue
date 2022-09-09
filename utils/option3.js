@@ -24,7 +24,7 @@ export default {
                 { text: 'rebase', max: 1 },
                 { text: 'maxSell', max: 1 }
             ],
-            radius: '68%',
+            radius: '65%',
             splitNumber: 4,
             shape: 'circle',
             axisName: {
