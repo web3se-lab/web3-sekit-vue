@@ -25,7 +25,12 @@ export default {
             },
             { name: 'format-detection', content: 'telephone=no' }
         ],
-        link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+        link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+        script: [
+            {
+                src: 'https://hm.baidu.com/hm.js?42707839013393a203b9fe674617bc79'
+            }
+        ]
     },
 
     // Global CSS: https://go.nuxtjs.dev/config-css
@@ -36,7 +41,8 @@ export default {
         '~/plugins/echarts',
         '~/plugins/vis',
         '~/plugins/flexible',
-        '~/plugins/code-highlight'
+        '~/plugins/code-highlight',
+        '~plugins/ga.js'
     ],
 
     // Auto import components: https://go.nuxtjs.dev/config-components
