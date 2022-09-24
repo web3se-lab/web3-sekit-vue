@@ -5,7 +5,7 @@ import kJson from '~/utils/kmeans-model.json'
 kJson.distanceFunction = KMeans.cosineDistance
 
 let URL = 'http://localhost:8080'
-if (process.env.NODE_ENV !== 'development') URL = 'https://smart.devil.ren'
+if (process.env.NODE_ENV !== 'development') URL = 'https://api.smart.web3se.top'
 
 export default {
     async get(ctl, params) {
