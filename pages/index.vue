@@ -32,6 +32,21 @@
             </b-collapse>
         </b-navbar>
 
+        <!--upload modal-->
+        <transition name="fade">
+            <UploadModal v-if="showModal2" @embed="predict" @close="showModal2 = false" />
+        </transition>
+        <!--predict modal-->
+        <transition name="fade">
+            <PredictModal
+                v-if="showModal"
+                :id="id"
+                :address="address"
+                :content="content"
+                @close="showModal = false"
+            />
+        </transition>
+
         <div class="fullscreen">
             <div class="info text-center">
                 <b-spinner
@@ -61,21 +76,7 @@
                         <b-badge variant="danger">New!</b-badge>
                     </b-button>
                 </div>
-                <!--predict modal-->
-                <transition name="fade">
-                    <PredictModal
-                        v-if="showModal"
-                        :id="id"
-                        :content="content"
-                        :address="address"
-                        :status="showModal"
-                        @close="showModal = false"
-                    />
-                </transition>
-                <!--upload modal-->
-                <transition name="fade">
-                    <UploadModal v-if="showModal2" @embed="predict" @close="showModal2 = false" />
-                </transition>
+
                 <div v-if="tab === 0 && sourceCode" class="tab-code">
                     <div v-for="(item, index) in sourceCode" :key="index" class="source-code">
                         <h3>{{ index }}</h3>

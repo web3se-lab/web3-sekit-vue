@@ -1,0 +1,82 @@
+@keyframes rotateAndScale {
+    from {
+        transform: rotate(0deg) scale(0);
+    }
+
+    to {
+        transform: rotate(720deg) scale(1);
+    }
+}
+
+@-webkit-keyframes rotateAndScale
+
+/*Safari and Chrome*/
+    {
+    from {
+        -webkit-transform: rotate(0deg) scale(0);
+    }
+
+    to {
+        -webkit-transform: rotate(720deg) scale(1);
+    }
+}
+
+@keyframes scaleX {
+    from {
+        transform: scaleX(0);
+    }
+
+    to {
+        transform: scaleX(1);
+    }
+}
+
+@-webkit-keyframes scaleX
+
+/*Safari and Chrome*/
+    {
+    from {
+        -webkit-transform: scaleX(0);
+    }
+
+    to {
+        -webkit-transform: scaleX(1);
+    }
+}
+
+.bling {
+    position: relative;
+    color: #f90;
+}
+
+.bling::before {
+    left: -2px;
+    text-shadow: 2px 0 #0b391a;
+    animation: glitch-anim-2 3s infinite linear alternate-reverse;
+}
+
+.bling::before,
+.bling::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    clip: rect(0, 0, 0, 0);
+}
+
+.bling::after {
+    left: 2px;
+    text-shadow: -1px 0 #000;
+    animation: glitch-anim-1 2s infinite linear alternate-reverse;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity .5s;
+}
+
+.fade-enter,
+.fade-leave-to {
+    opacity: 0;
+}

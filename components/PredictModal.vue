@@ -142,7 +142,7 @@ export default {
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 9999999;
+    z-index: 1100;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -181,13 +181,5 @@ export default {
     position: absolute;
     right: 15px;
     top: 10px;
-}
-.fade-enter-active,
-.fade-leave-active {
-    transition: all 0.5s;
-}
-.fade-enter,
-.fade-leave-to {
-    opacity: 0;
 }
 </style>
