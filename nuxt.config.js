@@ -75,6 +75,7 @@ export default {
             'Overlay',
             'FormRadio',
             'FormSelect',
+            'FormTextarea',
             'ToastPlugin'
         ]
     },

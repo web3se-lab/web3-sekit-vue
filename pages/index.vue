@@ -56,14 +56,26 @@
                         <b-button variant="warning" @click="tab = 2">OpCode 🔧</b-button>
                         <b-button variant="danger" @click="showModal = true">Predict 👍</b-button>
                     </b-button-group>
+                    <b-button variant="info" class="upload" block @click="showModal2 = true">
+                        Upload my smart contract
+                        <b-badge variant="danger">New!</b-badge>
+                    </b-button>
                 </div>
-                <PredictModal
-                    v-show="showModal"
-                    :id="id"
-                    :address="address"
-                    :status="showModal"
-                    @close="showModal = false"
-                />
+                <!--predict modal-->
+                <transition name="fade">
+                    <PredictModal
+                        v-if="showModal"
+                        :id="id"
+                        :content="content"
+                        :address="address"
+                        :status="showModal"
+                        @close="showModal = false"
+                    />
+                </transition>
+                <!--upload modal-->
+                <transition name="fade">
+                    <UploadModal v-if="showModal2" @embed="predict" @close="showModal2 = false" />
+                </transition>
                 <div v-if="tab === 0 && sourceCode" class="tab-code">
                     <div v-for="(item, index) in sourceCode" :key="index" class="source-code">
                         <h3>{{ index }}</h3>
@@ -131,14 +143,21 @@ export default {
             loading: false,
             keyword: '1',
             id: 0,
+            content: null,
             address: '',
             showModal: false,
+            showModal2: false,
             sourceCode: null,
             opCode: null,
             tree: [],
             option1: $.getObject(option),
             option2: $.getObject(option),
             option3: $.getObject(option)
+        }
+    },
+    watch: {
+        showModal2(v) {
+            if (!v) this.content = null
         }
     },
     mounted() {
@@ -229,6 +248,10 @@ export default {
                 data.children.push(data2)
             }
             return [data]
+        },
+        predict(content) {
+            this.content = content
+            this.showModal = true
         }
     }
 }
@@ -305,6 +328,11 @@ h3 {
 }
 .btn {
     font-size: 1rem;
+}
+.upload {
+    width: 25rem;
+    margin: 0 auto;
+    margin-top: 1rem;
 }
 .replace {
     padding: 33vh 0;

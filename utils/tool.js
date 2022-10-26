@@ -11,6 +11,9 @@ export default {
     async get(ctl, params) {
         return (await axios(`${URL}/${ctl}`, { params })).data
     },
+    async post(ctl, params) {
+        return (await axios.post(`${URL}/${ctl}`, params)).data
+    },
     getObject(obj) {
         return JSON.parse(JSON.stringify(obj))
     },
