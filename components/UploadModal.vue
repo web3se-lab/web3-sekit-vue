@@ -70,7 +70,7 @@ export default {
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 999;
+    z-index: 9999999;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -80,6 +80,8 @@ export default {
     width: 80vw;
     max-width: 100rem;
     height: 70vh;
+    background: #fff4d3;
+    color: #000;
 }
 .btn {
     margin-top: 1rem;
