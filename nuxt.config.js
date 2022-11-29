@@ -23,7 +23,12 @@ export default {
                 content:
                     'SmartIntentNN is a deep learning based tool for smart contract malicious intent detection!'
             },
-            { name: 'format-detection', content: 'telephone=no' }
+            {
+                hid: 'keywords',
+                name: 'keywords',
+                content:
+                    'SmartIntentNN, Intent Detection, Smart Contract, Binance Smart Chain, Blockchain, Web3, Software Engineering'
+            }
         ],
         link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
         script: [
