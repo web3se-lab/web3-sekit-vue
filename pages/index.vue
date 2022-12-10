@@ -16,12 +16,7 @@
                 <!-- Right aligned nav items -->
                 <b-navbar-nav class="ml-auto">
                     <b-nav-form @submit.prevent="loadData">
-                        <b-form-input
-                            v-model="keyword"
-                            class="search"
-                            placeholder="Id/Address"
-                            size="sm"
-                        />
+                        <b-form-input v-model="keyword" class="search" placeholder="Id/Address" size="sm" />
                         <b-button type="button" size="sm" @click="loadData">Search</b-button>
                     </b-nav-form>
 
@@ -38,23 +33,12 @@
         </transition>
         <!--predict modal-->
         <transition name="fade">
-            <PredictModal
-                v-if="showModal"
-                :id="id"
-                :address="address"
-                :content="content"
-                @close="showModal = false"
-            />
+            <PredictModal v-if="showModal" :id="id" :address="address" :content="content" @close="showModal = false" />
         </transition>
 
         <div class="fullscreen">
             <div class="info text-center">
-                <b-spinner
-                    v-show="loading"
-                    variant="primary"
-                    type="grow"
-                    label="Spinning"
-                ></b-spinner>
+                <b-spinner v-show="loading" variant="primary" type="grow" label="Spinning"></b-spinner>
                 <p v-show="id && !loading">
                     Smart Contract ID: <b>{{ id }}</b>
                 </p>
@@ -68,7 +52,9 @@
                     <b-button-group>
                         <b-button variant="success" @click="tab = 0">Context 📜</b-button>
                         <b-button variant="primary" @click="tab = 1">CCTree 🌲</b-button>
-                        <b-button variant="warning" @click="tab = 2">OpCode 🔧</b-button>
+                        <!--
+                        <b-button variant="warning" @click="tab = 2">OpCode ⚙️</b-button>
+                        -->
                         <b-button variant="danger" @click="showModal = true">Predict 👍</b-button>
                     </b-button-group>
                     <b-button variant="info" class="upload" block @click="showModal2 = true">
@@ -77,21 +63,20 @@
                     </b-button>
                 </div>
 
-                <div v-if="tab === 0 && sourceCode" class="tab-code">
-                    <div v-for="(item, index) in sourceCode" :key="index" class="source-code">
-                        <h3>{{ index }}</h3>
-                        <vue-code-highlight language="solidity">
-                            <pre> {{ item }} </pre>
-                        </vue-code-highlight>
-                    </div>
+                <div v-if="tab === 0 && sourceCode" class="tab-code source-code">
+                    <vue-code-highlight language="solidity">
+                        <pre> {{ sourceCode }} </pre>
+                    </vue-code-highlight>
                 </div>
                 <div v-if="tab === 1" class="tab-tree">
                     <h3>Code Tree</h3>
                     <v-chart class="chart" :option="option1" />
+                    <!--
                     <h3>ABI Tree</h3>
                     <v-chart class="chart" :option="option2" />
                     <h3>MethodIdentifiers Tree</h3>
                     <v-chart class="chart" :option="option3" />
+                    -->
                 </div>
                 <div v-if="tab === 2 && opCode" class="tab-opcode">
                     <div v-for="(item, index) in opCode" :key="index" class="source-code">
@@ -113,12 +98,7 @@
             <a href="https://gitlab.com/web3se/smartvue" target="_blank">Gitlab CI/CD</a>
         </footer>
         <div v-show="false">
-            <vue-code-highlight
-                v-for="(item, index) in tree"
-                :key="index"
-                :ref="item.key"
-                language="solidity"
-            >
+            <vue-code-highlight v-for="(item, index) in tree" :key="index" :ref="item.key" language="solidity">
                 <pre style="margin: 0;">{{ item.code }}</pre>
             </vue-code-highlight>
         </div>
@@ -172,15 +152,15 @@ export default {
                 if (res) {
                     this.id = res.Id
                     this.address = res.ContractAddress
-                    this.sourceCode = this.getContractMap(res.SourceCode)
-                    this.opCode = JSON.parse(res.OpCode)
+                    this.sourceCode = res.SourceCode
+                    // this.opCode = JSON.parse(res.OpCode)
                     // handle trees
                     this.option1.series[0].tooltip.padding = 0
                     this.option1.series[0].tooltip.borderWidth = 0
-                    const tree = JSON.parse(res.SourceCode)
+                    const tree = res.SourceCodeMap
                     this.option1.series[0].data = this.getTree(tree, 1)
-                    this.option2.series[0].data = this.getTree(JSON.parse(res.ABI), 2)
-                    this.option3.series[0].data = this.getTree(JSON.parse(res.MethodIdentifiers), 3)
+                    // this.option2.series[0].data = this.getTree(JSON.parse(res.ABI), 2)
+                    // this.option3.series[0].data = this.getTree(JSON.parse(res.MethodIdentifiers), 3)
                     this.tree = []
                     for (const i in tree)
                         for (const j in tree[i]) this.tree.push({ key: i + j, code: tree[i][j] })
@@ -190,6 +170,7 @@ export default {
                     this.abi = []
                 }
             } catch (e) {
+                console.error(e)
                 this.id = ''
                 this.sourceCode = null
                 this.address = ''
@@ -261,29 +242,35 @@ export default {
 .fullscreen {
     min-height: 85vh;
 }
+
 h3 {
     font-size: 1.5rem;
     margin: 1rem 0;
 }
+
 .info,
 .content {
     margin-top: 1rem;
 }
+
 .info p {
     margin: 0;
     padding: 0.1rem 0;
     font-size: 0.95rem;
 }
+
 .code {
     width: 100%;
     margin: 0 auto;
 }
+
 .tab-tree {
     margin: 0 auto;
     width: 95%;
     max-width: 800px;
     margin-top: 1rem;
 }
+
 .chart {
     width: 100%;
     max-width: 900px;
@@ -292,12 +279,15 @@ h3 {
     margin: 0 auto;
     border: solid 1px #ccc;
 }
+
 .search {
     width: 360px;
 }
+
 .code.opcode {
     white-space: inherit;
 }
+
 .source-code {
     width: 95%;
     margin: 0 auto;
@@ -305,36 +295,44 @@ h3 {
     font-size: 0.8rem;
     max-width: 1200px;
 }
+
 .title {
     font-size: 1rem;
     line-height: 1.2rem;
 }
+
 .form {
     padding: 50px 20px 20px 20px;
     display: flex;
     justify-items: center;
     align-content: center;
 }
+
 .footer {
     padding: 20px 0;
 }
+
 .logo {
     position: relative;
 }
+
 .version {
     transform: scale(0.65);
     position: absolute;
     right: -50px;
     top: -5px;
 }
+
 .btn {
     font-size: 1rem;
 }
+
 .upload {
     width: 25rem;
     margin: 0 auto;
     margin-top: 1rem;
 }
+
 .replace {
     padding: 33vh 0;
     text-align: center;

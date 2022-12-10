@@ -65,7 +65,7 @@ export default {
             this.msg('Embedding Smart Contracts...')
             const res = await $.get('code/embedding', { key: this.id })
             this.msg('Smart Contract context embedded!')
-            return res
+            return res.Embedding
         },
         highlight(res) {
             this.msg('===============Intent Highlight=================')
@@ -111,10 +111,9 @@ export default {
                 this.msg('===============Intents Predicted================')
                 for (const i in ys)
                     this.msg(
-                        `${
-                            ys[i] >= 0.5
-                                ? '<span style="background: #dc3545;color: #fff;">'
-                                : '<span style="color: #28a745;">'
+                        `${ys[i] >= 0.5
+                            ? '<span style="background: #dc3545;color: #fff;">'
+                            : '<span style="color: #28a745;">'
                         }${intent[i]} ${ys[i]}${ys[i] >= 0.5 ? '</span>' : ''}`
                     )
                 this.msg('===================END======================')
@@ -148,12 +147,14 @@ export default {
     align-items: center;
     backdrop-filter: blur(0.3rem);
 }
+
 .modal-box {
     height: 100%;
     width: 103%;
     overflow-y: scroll;
     color: #fff;
 }
+
 .box-bg {
     padding: 1rem;
     width: 70vw;
@@ -165,17 +166,21 @@ export default {
     background: rgba(0, 0, 0, 0.8);
     position: relative;
 }
+
 .modal-box h1 {
     font-size: 2.5rem;
 }
+
 .modal-box h5 {
     color: #ffc107;
     font-size: 1.2rem;
 }
+
 .modal-box p {
     font-size: 1rem;
     line-height: 1.2rem;
 }
+
 .close {
     color: #fff;
     position: absolute;

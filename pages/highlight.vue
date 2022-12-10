@@ -2,13 +2,7 @@
     <div>
         <b-overlay :show="loading" rounded="sm">
             <div class="network-box">
-                <vis-network
-                    ref="network"
-                    class="network"
-                    :nodes="nodes"
-                    :edges="edges"
-                    :options="options"
-                />
+                <vis-network ref="network" class="network" :nodes="nodes" :edges="edges" :options="options" />
             </div>
             <div class="list">
                 <h3>Rank List DESC</h3>
@@ -20,11 +14,7 @@
             </div>
             <div class="tool">
                 <h6>Highlight Predict</h6>
-                <b-form-input
-                    v-model="keyword"
-                    placeholder="Search a key"
-                    @keyup.enter="loadData"
-                />
+                <b-form-input v-model="keyword" placeholder="Search a key" @keyup.enter="loadData" />
                 <b-form-select v-model="selected" :options="selects"></b-form-select>
                 <b-row>
                     <b-col>
@@ -124,7 +114,7 @@ export default {
                 this.nodes = []
                 this.edges = []
                 let data = await $.get('code/embedding', { key: this.keyword })
-                data = data.SourceCode
+                data = data.Embedding
 
                 const fun = []
                 const map = {}
@@ -209,10 +199,12 @@ export default {
     width: 100vw;
     height: 100vh;
 }
+
 .network {
     width: 100%;
     height: 100%;
 }
+
 .tool {
     position: fixed;
     z-index: 9;
@@ -221,6 +213,7 @@ export default {
     padding: 1rem;
     background: rgba(0, 0, 0, 0.1);
 }
+
 .list {
     position: fixed;
     left: 0;
@@ -234,14 +227,17 @@ export default {
     margin: auto 0;
     padding: 10px;
 }
+
 .list h3 {
     font-size: 1.5rem;
 }
+
 .content {
     overflow: scroll;
     height: 93vh;
     width: 108%;
 }
+
 @media screen and (max-width: 900px) {
     .list {
         bottom: auto;
@@ -252,12 +248,15 @@ export default {
         height: 150px;
         width: 100%;
     }
+
     .list h3 {
         display: none;
     }
+
     .content {
         height: 100%;
     }
+
     .tool {
         left: 1rem;
     }
