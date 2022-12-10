@@ -123,7 +123,8 @@ export default {
                 this.loading = true
                 this.nodes = []
                 this.edges = []
-                const data = await $.get('code/embedding', { key: this.keyword })
+                let data = await $.get('code/embedding', { key: this.keyword })
+                data = data.SourceCode
 
                 const fun = []
                 const map = {}

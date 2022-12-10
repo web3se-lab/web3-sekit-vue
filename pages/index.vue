@@ -177,7 +177,7 @@ export default {
                     // handle trees
                     this.option1.series[0].tooltip.padding = 0
                     this.option1.series[0].tooltip.borderWidth = 0
-                    const tree = JSON.parse(res.SourceCodeMap)
+                    const tree = JSON.parse(res.SourceCode)
                     this.option1.series[0].data = this.getTree(tree, 1)
                     this.option2.series[0].data = this.getTree(JSON.parse(res.ABI), 2)
                     this.option3.series[0].data = this.getTree(JSON.parse(res.MethodIdentifiers), 3)

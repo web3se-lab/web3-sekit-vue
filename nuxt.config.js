@@ -1,13 +1,8 @@
 export default {
-    // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
     ssr: false,
-
-    // Target: https://go.nuxtjs.dev/config-target
     target: 'static',
-
-    // Global page headers: https://go.nuxtjs.dev/config-head
     head: {
-        title: 'Smart Intent',
+        title: 'SmartIntentNN',
         htmlAttrs: {
             lang: 'en'
         },
@@ -21,7 +16,7 @@ export default {
                 hid: 'description',
                 name: 'description',
                 content:
-                    'SmartIntentNN is a deep learning based tool for smart contract malicious intent detection!'
+                    'SmartIntentNN is a deep learning based tool for smart contract intent detection!'
             },
             {
                 hid: 'keywords',
