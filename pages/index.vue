@@ -40,10 +40,13 @@
             <div class="info text-center">
                 <b-spinner v-show="loading" variant="primary" type="grow" label="Spinning"></b-spinner>
                 <p v-show="id && !loading">
-                    Smart Contract ID: <b>{{ id }}</b>
+                    Database ID: <b>{{ id }}</b>
                 </p>
                 <p v-show="address && !loading">
-                    Smart Contract Address: <b>{{ address }}</b>
+                    Name: <b>{{ name }}</b>
+                </p>
+                <p v-show="address && !loading">
+                    Address: <b>{{ address }}</b>
                 </p>
             </div>
 
@@ -124,6 +127,7 @@ export default {
             loading: false,
             keyword: '1',
             id: 0,
+            name: '',
             content: null,
             address: '',
             showModal: false,
@@ -152,6 +156,7 @@ export default {
                 if (res) {
                     this.id = res.Id
                     this.address = res.ContractAddress
+                    this.name = res.ContractName
                     this.sourceCode = res.SourceCode
                     // this.opCode = JSON.parse(res.OpCode)
                     // handle trees
@@ -198,7 +203,7 @@ export default {
         // type 2 abi
         // type 3 MethodIdentifiers
         getTree(tree, type = 1) {
-            const data = { name: 'Smart Contract', children: [], itemStyle: { color: '#000' } }
+            const data = { name: this.name, children: [], itemStyle: { color: '#000' } }
             for (const i in tree) {
                 const data2 = { name: i, children: [], collapsed: Object.keys(tree[i]).length > 15 }
                 for (const j in tree[i])
