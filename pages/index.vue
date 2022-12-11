@@ -66,11 +66,12 @@
                     </b-button>
                 </div>
 
-                <div v-if="tab === 0 && sourceCode" class="tab-code source-code">
-                    <vue-code-highlight language="solidity">
+                <div v-if="tab === 0" class="tab-code">
+                    <vue-code-highlight v-if="sourceCode" language="solidity">
                         <pre> {{ sourceCode }} </pre>
                     </vue-code-highlight>
                 </div>
+
                 <div v-if="tab === 1" class="tab-tree">
                     <h3>Code Tree</h3>
                     <v-chart class="chart" :option="option1" />
@@ -111,13 +112,6 @@
 <script>
 import $ from '~/utils/tool'
 import option from '~/utils/option'
-/*
-const COLOR1 = '#007bff'
-const COLOR2 = '#ffc107'
-const COLOR3 = '#28a745'
-const COLOR4 = '#17a2b8'
-const COLOR5 = '#dc3545'
-*/
 
 export default {
     name: 'IndexPage',
@@ -132,7 +126,7 @@ export default {
             address: '',
             showModal: false,
             showModal2: false,
-            sourceCode: null,
+            sourceCode: '',
             opCode: null,
             tree: [],
             option1: $.getObject(option),
@@ -152,34 +146,33 @@ export default {
         async loadData() {
             try {
                 this.loading = true
+                this.id = ''
+                this.address = ''
+                this.sourceCode = ''
+                this.option1.series[0].data = []
+                this.tree = []
                 const res = await $.get('code/get', { key: this.keyword })
                 if (res) {
                     this.id = res.Id
                     this.address = res.ContractAddress
                     this.name = res.ContractName
                     this.sourceCode = res.SourceCode
+
+                    // generate tree
                     // this.opCode = JSON.parse(res.OpCode)
                     // handle trees
                     this.option1.series[0].tooltip.padding = 0
                     this.option1.series[0].tooltip.borderWidth = 0
                     const tree = res.SourceCodeMap
+                    // generate code snippets template for charts
+                    for (const i in tree)
+                        for (const j in tree[i]) this.tree.push({ key: i + j, code: tree[i][j] })
                     this.option1.series[0].data = this.getTree(tree, 1)
                     // this.option2.series[0].data = this.getTree(JSON.parse(res.ABI), 2)
                     // this.option3.series[0].data = this.getTree(JSON.parse(res.MethodIdentifiers), 3)
-                    this.tree = []
-                    for (const i in tree)
-                        for (const j in tree[i]) this.tree.push({ key: i + j, code: tree[i][j] })
-                } else {
-                    this.sourceCode = null
-                    this.opCode = []
-                    this.abi = []
                 }
             } catch (e) {
                 console.error(e)
-                this.id = ''
-                this.sourceCode = null
-                this.address = ''
-                this.opCode = null
                 this.$bvToast.toast(e.message, {
                     title: 'Error Query',
                     variant: 'danger',
@@ -293,7 +286,7 @@ h3 {
     white-space: inherit;
 }
 
-.source-code {
+.tab-code {
     width: 95%;
     margin: 0 auto;
     margin-top: 1rem;
