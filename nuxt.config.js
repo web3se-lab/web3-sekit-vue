@@ -29,10 +29,6 @@ export default {
         script: [
             {
                 src: 'https://hm.baidu.com/hm.js?42707839013393a203b9fe674617bc79'
-            },
-            {
-                id: 'clstr_globe',
-                src: '//clustrmaps.com/globe.js?d=iF3YC_pP8Q4CyB7kf6nzgBUDZRaejoyO2eLLSlTM8T8'
             }
         ]
     },
