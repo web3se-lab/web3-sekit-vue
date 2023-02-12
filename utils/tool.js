@@ -4,7 +4,7 @@ import KMeans from 'tf-kmeans-browser'
 import kJson from '~/utils/kmeans-model.json'
 kJson.distanceFunction = KMeans.cosineDistance
 
-let URL = 'https://api.smart.cas-ll.com'
+let URL = 'http://localhost:8080'
 if (process.env.NODE_ENV !== 'development') URL = 'https://api.smart.cas-ll.com'
 
 export default {
