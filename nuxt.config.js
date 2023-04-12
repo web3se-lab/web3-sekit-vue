@@ -79,9 +79,6 @@ export default {
             'ToastPlugin'
         ]
     },
-    router: {
-        base: '/smartvue'
-    },
     build: {
         analyze: true,
         optimization: {
