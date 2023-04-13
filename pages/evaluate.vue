@@ -2,18 +2,18 @@
     <div class="evaluate">
         <h1 class="text-center">Evaluation</h1>
         <div class="settings">
-            <h2>Experimental Configurations</h2>
+            <h2>Experimental Settings</h2>
             <p>
-                <span>Trained dataset:</span>
+                <span>Trained Dataset:</span>
                 1, 10000
             </p>
             <p>
-                <span>Evaluated dataset:</span>
+                <span>Evaluated Dataset:</span>
                 20000, 10000
             </p>
             <p>
                 <span>Trained batch:</span>
-                batches 500 | batchSize 20 | epoch 30
+                Batches 100 | BatchSize 100 | Epoch 100
             </p>
             <p>
                 <span>Optimizer:</span>
@@ -27,29 +27,13 @@
                 <span>Metrics:</span>
                 Accuracy | Precision | Recall | F1
             </p>
-            <p>
-                <span>LSTM hidden units:</span>
-                32
-            </p>
-            <p>
-                <span>Highlight distance & scale:</span>
-                >=0.2 | X10
-            </p>
-            <p>
-                <span>Rank:</span>
-                ASC
-            </p>
-            <p>
-                <span>Mask:</span>
-                0.0
-            </p>
         </div>
         <h2>Result Charts</h2>
         <div v-show="loading" class="text-center">
             <b-spinner variant="primary" type="grow" label="Spinning"></b-spinner>
         </div>
         <b-row>
-            <b-col v-for="(item, index) in options" :key="index" lg="3" md="6">
+            <b-col v-for="(item, index) in options" :key="index" lg="4" md="6">
                 <h3>{{ item.chartTitle }}</h3>
                 <v-chart class="chart" :option="options[index]" />
                 <v-chart class="chart-r" :option="options2[index]" />
@@ -188,34 +172,41 @@ h1 {
     margin: 10px 0;
     font-size: 40px;
 }
+
 h2 {
     margin: 10px 0;
     font-size: 25px;
 }
+
 h3 {
     margin: 10px 0;
     font-size: 18px;
 }
+
 .settings p {
     background: rgba(0, 0, 0, 0.1);
     padding: 5px;
     font-size: 15px;
     margin: 0;
 }
+
 .settings p span {
     font-weight: bold;
 }
+
 .evaluate {
     max-width: 95vw;
     margin: 0 auto;
 }
+
 .chart {
     width: 100%;
-    height: 250px;
+    height: 300px;
     margin: 0 auto;
     border: solid 1px #ccc;
     margin-bottom: 20px;
 }
+
 .chart-r {
     width: 100%;
     height: 380px;
