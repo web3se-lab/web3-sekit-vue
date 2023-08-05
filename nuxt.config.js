@@ -42,7 +42,7 @@ export default {
         '~/plugins/vis',
         '~/plugins/flexible',
         '~/plugins/code-highlight',
-        '~plugins/ga.js'
+        '~/plugins/ga.js'
     ],
 
     // Auto import components: https://go.nuxtjs.dev/config-components
