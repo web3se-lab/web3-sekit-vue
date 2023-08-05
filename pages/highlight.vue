@@ -2,7 +2,13 @@
     <div>
         <b-overlay :show="loading" rounded="sm">
             <div class="network-box">
-                <vis-network ref="network" class="network" :nodes="nodes" :edges="edges" :options="options" />
+                <vis-network
+                    ref="network"
+                    class="network"
+                    :nodes="nodes"
+                    :edges="edges"
+                    :options="options"
+                />
             </div>
             <div class="list">
                 <h3>Rank List DESC</h3>
@@ -14,7 +20,7 @@
             </div>
             <div class="tool">
                 <h6>Highlight Predict</h6>
-                <b-form-input v-model="keyword" placeholder="Search a key" @keyup.enter="loadData" />
+                <b-form-input v-model="key" placeholder="Search a key" @keyup.enter="loadData" />
                 <b-form-select v-model="selected" :options="selects"></b-form-select>
                 <b-row>
                     <b-col>
@@ -31,6 +37,7 @@
 <script>
 import uniqolor from 'uniqolor'
 import $ from '~/utils/tool'
+import options from '~/utils/option1'
 const DISTANCE = 0.21
 
 export default {
@@ -38,7 +45,7 @@ export default {
     data() {
         return {
             loading: false,
-            keyword: 1,
+            key: '1',
             selected: 'repulsion',
             smooth: true,
             selects: [
@@ -50,45 +57,7 @@ export default {
             list: [],
             nodes: [],
             edges: [],
-            options: {
-                height: '100%',
-                width: '100%',
-                nodes: {
-                    size: 8,
-                    shape: 'dot',
-                    font: {
-                        size: 12,
-                        face: 'TimesNewRoman'
-                    }
-                },
-                edges: {
-                    width: 1,
-                    color: { inherit: 'from' },
-                    smooth: {
-                        type: 'dynamic',
-                        roundness: 0.5
-                    }
-                },
-                physics: {
-                    enabled: true,
-                    solver: 'repulsion',
-                    forceAtlas2Based: {
-                        gravitationalConstant: -1000,
-                        centralGravity: 0.1,
-                        avoidOverlap: 1
-                    },
-                    repulsion: {
-                        nodeDistance: 100,
-                        centralGravity: 0.1
-                    }
-                },
-                autoResize: true,
-                interaction: {
-                    tooltipDelay: 200,
-                    hideEdgesOnDrag: true,
-                    hideEdgesOnZoom: true
-                }
-            }
+            options
         }
     },
     watch: {
@@ -113,15 +82,17 @@ export default {
                 this.loading = true
                 this.nodes = []
                 this.edges = []
-                let data = await $.get('code/embedding', { key: this.keyword })
-                data = data.Embedding
+                const res = await $.post('contract/get', { key: this.key })
+                const type = res.CompilerVersion.includes('vyper') ? 'vyper' : 'solidity'
+                const data = await $.post('data/embedding', { text: res.SourceCode, type })
+                const embed = data.Embedding
 
                 const fun = []
                 const map = {}
-                for (const i in data)
-                    for (const j in data[i]) {
-                        fun.push(data[i][j])
-                        map[data[i][j]] = `${i}/${j}`
+                for (const i in embed)
+                    for (const j in embed[i]) {
+                        fun.push(embed[i][j])
+                        map[embed[i][j]] = `${i}/${j}`
                     }
                 const xs = $.tf.tensor(fun)
                 const ys = $.kmeans.predict(xs)

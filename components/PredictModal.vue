@@ -10,7 +10,7 @@
                 <h5>Powered by Tensorflow.js, deep learning is running on your Browser!</h5>
                 <br />
                 <p v-for="(item, index) in msgs" :key="index" v-html="item"></p>
-                <p>
+                <p v-if="address">
                     <a target="_blank" :href="url + address">See the ground truth: {{ address }}</a>
                 </p>
             </div>
@@ -29,19 +29,21 @@ export default {
             default: 0
         },
         content: {
-            type: Object,
-            default() {
-                return null
-            }
+            type: String,
+            default: ''
         },
         address: {
             type: String,
             default: ''
+        },
+        type: {
+            type: String,
+            default: 'solidity'
         }
     },
     data() {
         return {
-            url: `${$.API}/data/sourceCodeRisk?key=`,
+            url: `${$.API}/data/codeRisk?key=`,
             msgs: [],
             loading: false
         }
@@ -59,13 +61,6 @@ export default {
         },
         close() {
             this.$emit('close')
-        },
-        async embed() {
-            this.msg('===============Smart Contract Embed=================')
-            this.msg('Embedding Smart Contracts...')
-            const res = await $.get('code/embedding', { key: this.id })
-            this.msg('Smart Contract context embedded!')
-            return res.Embedding
         },
         highlight(res) {
             this.msg('===============Intent Highlight=================')
@@ -96,24 +91,25 @@ export default {
         async predict() {
             try {
                 this.loading = true
-                if (!this.content) this.msg(`Primary key: ${this.id}</br>Address: ${this.address}`)
-                else this.msg('User manually submitted smart contact')
-                this.msg('Start predicting...Please wait...')
-                let res = null
-                if (this.content) res = this.content
-                else res = await this.embed()
-                const xs = this.highlight(res)
+                if (this.id) this.msg(`Id: ${this.id}`)
+                if (this.address) this.msg(`Address: ${this.address}`)
+                this.msg('Start predicting...Waiting...')
+                this.msg('=================Embedding==================')
+                const res = await $.post('data/embedding', { text: this.content, type: this.type })
+                this.msg('Smart Contract context embedded!')
+                const xs = this.highlight(res.Embedding)
                 this.msg('=================DNN Predict=================')
                 this.msg('DNN (with BiLSTM) model is loading...')
                 const model = await $.tf.loadLayersModel('mymodel_bilstm_high_scale/model.json')
                 this.msg('DNN model is predicting intents...')
                 const ys = model.predict($.tf.tensor([xs])).arraySync()[0]
-                this.msg('===============Intents Predicted================')
+                this.msg('==============Intents Predicted==============')
                 for (const i in ys)
                     this.msg(
-                        `${ys[i] >= 0.5
-                            ? '<span style="background: #dc3545;color: #fff;">'
-                            : '<span style="color: #28a745;">'
+                        `${
+                            ys[i] >= 0.5
+                                ? '<span style="background: #dc3545;color: #fff;">'
+                                : '<span style="color: #28a745;">'
                         }${intent[i]} ${ys[i]}${ys[i] >= 0.5 ? '</span>' : ''}`
                     )
                 this.msg('===================END======================')
