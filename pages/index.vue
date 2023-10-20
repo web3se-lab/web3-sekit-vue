@@ -169,6 +169,7 @@ export default {
                         $.clearCode($.multiContracts(this.content), this.type),
                         this.type
                     )
+                    console.log(tree)
                     // generate code snippets template for charts
                     for (const i in tree)
                         for (const j in tree[i]) this.tree.push({ key: i + j, code: tree[i][j] })
