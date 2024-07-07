@@ -10,8 +10,8 @@
                 <h5>Powered by Tensorflow.js, deep learning is running on your Browser!</h5>
                 <br />
                 <p v-for="(item, index) in msgs" :key="index" v-html="item"></p>
-                <p v-if="address">
-                    <a target="_blank" :href="url + address">See the ground truth: {{ address }}</a>
+                <p v-if="id">
+                    <a target="_blank" :href="url + id">See the ground truth: {{ address }}</a>
                 </p>
             </div>
         </div>
@@ -43,7 +43,7 @@ export default {
     },
     data() {
         return {
-            url: `${$.API}/data/codeRisk?key=`,
+            url: `${$.API}/data/intent?key=`,
             msgs: [],
             loading: false
         }

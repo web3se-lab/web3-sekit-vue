@@ -5,15 +5,15 @@
             <h2>Experimental Settings</h2>
             <p>
                 <span>Trained Dataset:</span>
-                1, 10000
+                20,000 smart contracts
             </p>
             <p>
                 <span>Evaluated Dataset:</span>
-                20000, 10000
+                10,000 smart contracts
             </p>
             <p>
                 <span>Trained batch:</span>
-                Batches 100 | BatchSize 100 | Epoch 100
+                Batches 200 | BatchSize 100 | Epoch 100
             </p>
             <p>
                 <span>Optimizer:</span>
@@ -27,16 +27,33 @@
                 <span>Metrics:</span>
                 Accuracy | Precision | Recall | F1
             </p>
+            <p>
+                <span>Encoder:</span>
+                Universal Sentence Encoder
+            </p>
+            <p class="text-right">
+                <b-button-group>
+                    <b-button variant="success" :disabled="loading" @click="version = 0"
+                        >Baselines</b-button
+                    >
+                    <b-button variant="warning" :disabled="loading" @click="version = 1"
+                        >SmartIntentNN V1.0</b-button
+                    >
+                    <b-button variant="danger" :disabled="loading" @click="version = 2"
+                        >SmartIntentNN V2.0</b-button
+                    >
+                </b-button-group>
+            </p>
         </div>
         <h2>Result Charts</h2>
         <div v-show="loading" class="text-center">
             <b-spinner variant="primary" type="grow" label="Spinning"></b-spinner>
         </div>
         <b-row>
-            <b-col v-for="(item, index) in options" :key="index" lg="4" md="6">
-                <h3>{{ item.chartTitle }}</h3>
-                <v-chart class="chart" :option="options[index]" />
-                <v-chart class="chart-r" :option="options2[index]" />
+            <b-col v-for="(item, index) in chart" :key="index" lg="4" md="6">
+                <h3>{{ item.title }}</h3>
+                <v-chart class="chart" :option="item.line" />
+                <v-chart class="chart-r" :option="item.radar" />
             </b-col>
         </b-row>
     </div>
@@ -53,30 +70,43 @@ export default {
     data() {
         return {
             loading: false,
-            options: [], // line charts
-            options2: [] // radar charts
+            chart: [],
+            version: 0
         }
     },
-    mounted() {
-        this.loadData()
+    watch: {
+        version: {
+            immediate: true,
+            async handler(v) {
+                this.chart = []
+                let max = 0
+                if (v === 0) max = 4
+                else if (v === 1) max = 6
+                else if (v === 2) max = 4
+
+                for (let i = 0; i < max; i++) {
+                    const data = await this.loadData(i)
+                    this.chart.push(data)
+                }
+            }
+        }
     },
     methods: {
-        async loadData() {
+        async loadData(i) {
             try {
                 this.loading = true
-                const res = await $.get('data/evaluate')
-                for (const i in res) {
-                    const data = [['value', 'evaluation', 'num']]
-                    for (const j in res[i].data) {
-                        const all = res[i].data[j][res[i].data[j].length - 1]
-                        data.push([all.accuracy, 'AC', parseInt(j) + 1])
-                        data.push([all.precision, 'PR', parseInt(j) + 1])
-                        data.push([all.recall, 'RE', parseInt(j) + 1])
-                        data.push([all.F1, 'F1', parseInt(j) + 1])
-                    }
-                    this.addOption(res[i].title, data)
-                    this.radar(res[i].data[res[i].data.length - 1])
+                const res = await $.get(`data/evaluate?index=${i}&version=${this.version}`)
+                const data = [['value', 'evaluation', 'num']]
+                for (const i in res.data) {
+                    const all = res.data[i][res.data[i].length - 1]
+                    data.push([all.accuracy, 'AC', parseInt(i) + 1])
+                    data.push([all.precision, 'PR', parseInt(i) + 1])
+                    data.push([all.recall, 'RE', parseInt(i) + 1])
+                    data.push([all.F1, 'F1', parseInt(i) + 1])
                 }
+                const line = this.line(res.title, data)
+                const radar = this.radar(res.data[res.data.length - 1])
+                return { title: res.title, line, radar }
             } catch (e) {
                 this.$bvToast.toast(e.message, {
                     title: 'Error Evaluation Request',
@@ -104,9 +134,9 @@ export default {
             option.series[0].data[1].value = pr
             option.series[0].data[2].value = re
             option.series[0].data[3].value = f1
-            this.options2.push(option)
+            return option
         },
-        addOption(title, data) {
+        line(title, data) {
             const evaluates = ['AC', 'PR', 'RE', 'F1']
             const datasetWithFilters = []
             const seriesList = []
@@ -162,7 +192,7 @@ export default {
                 option.series = seriesList
                 option.chartTitle = title
             })
-            this.options.push(option)
+            return option
         }
     }
 }
@@ -181,10 +211,10 @@ h2 {
 h3 {
     margin: 10px 0;
     font-size: 18px;
+    text-align: center;
 }
 
 .settings p {
-    background: rgba(0, 0, 0, 0.1);
     padding: 5px;
     font-size: 15px;
     margin: 0;
@@ -203,7 +233,6 @@ h3 {
     width: 100%;
     height: 300px;
     margin: 0 auto;
-    border: solid 1px #ccc;
     margin-bottom: 20px;
 }
 

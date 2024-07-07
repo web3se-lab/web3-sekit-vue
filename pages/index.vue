@@ -50,7 +50,7 @@
                     label="Spinning"
                 ></b-spinner>
                 <p v-show="id && !loading">
-                    DataSet Primary Key: <b>{{ id }}</b>
+                    DataSet Primary Key Id: <b>{{ id }}</b>
                 </p>
                 <p v-show="address && !loading">
                     Smart Contract Name: <b>{{ name }}</b>
@@ -63,12 +63,12 @@
             <div class="content">
                 <div class="text-center">
                     <b-button-group>
-                        <b-button variant="success" @click="tab = 0">Context 📜</b-button>
+                        <b-button variant="success" @click="tab = 0">Code 📜</b-button>
                         <b-button variant="primary" @click="tab = 1">CCTree 🌲</b-button>
-                        <b-button variant="danger" @click="predict(null)">Predict 👍</b-button>
+                        <b-button variant="danger" @click="predict(null)">Predict 🚀</b-button>
                     </b-button-group>
                     <b-button variant="info" class="upload" block @click="showModal = true">
-                        Upload My Smart Contract
+                        Detect My Smart Contract
                         <b-badge variant="danger">New!</b-badge>
                     </b-button>
                 </div>
