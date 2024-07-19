@@ -79,23 +79,21 @@ export default {
             immediate: true,
             async handler(v) {
                 this.chart = []
-                let max = 0
-                if (v === 0) max = 4
-                else if (v === 1) max = 6
-                else if (v === 2) max = 4
+                const max = 10
 
                 for (let i = 0; i < max; i++) {
-                    const data = await this.loadData(i)
+                    const data = await this.loadData(i, v)
+                    if (!data) break
                     this.chart.push(data)
                 }
             }
         }
     },
     methods: {
-        async loadData(i) {
+        async loadData(index, version) {
             try {
                 this.loading = true
-                const res = await $.get(`data/evaluate?index=${i}&version=${this.version}`)
+                const res = await $.get(`data/evaluate?index=${index}&version=${version}`)
                 const data = [['value', 'evaluation', 'num']]
                 for (const i in res.data) {
                     const all = res.data[i][res.data[i].length - 1]
@@ -108,11 +106,7 @@ export default {
                 const radar = this.radar(res.data[res.data.length - 1])
                 return { title: res.title, line, radar }
             } catch (e) {
-                this.$bvToast.toast(e.message, {
-                    title: 'Error Evaluation Request',
-                    variant: 'danger',
-                    solid: true
-                })
+                return null
             } finally {
                 this.loading = false
             }
