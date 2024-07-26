@@ -68,24 +68,21 @@ export default {
             this.msg(`Intent Highlight K-means is loaded...k=${$.kmeans.k}`)
             const xs = []
             for (const i in res) for (const j in res[i]) xs.push(res[i][j])
+            while (xs.length < 256) xs.push(Array(512).fill(0.0))
             const tx = $.tf.tensor(xs)
             const ty = $.kmeans.predict(tx).distance.arraySync()
             this.msg(`Distances are predicted`)
             const data = []
-            for (const i in xs)
-                data.push({
-                    vector: xs[i],
-                    distance: ty[i]
-                })
+            for (const i in xs) data.push({ vector: xs[i], distance: ty[i] })
             const xs2 = []
-            for (const item of data) {
+            for (const item of data)
                 xs2.push(
-                    item.distance < 0.2
+                    item.distance < 0.21
                         ? item.vector
-                        : $.tf.tensor(item.vector).mul($.tf.scalar(2)).arraySync()
+                        : $.tf.tensor(item.vector).mul($.tf.scalar(16)).arraySync()
                 )
-            }
-            this.msg(`Embeddings are scaled X2`)
+
+            this.msg(`Embeddings are scaled X16`)
             return xs2
         },
         async predict() {
@@ -100,7 +97,7 @@ export default {
                 const xs = this.highlight(res.Embedding)
                 this.msg('=================DNN Predict=================')
                 this.msg('DNN (with BiLSTM) model is loading...')
-                const model = await $.tf.loadLayersModel('mymodel_bilstm_high_scale/model.json')
+                const model = await $.tf.loadLayersModel('use-high-bilstm-x16/model.json')
                 this.msg('DNN model is predicting intents...')
                 const ys = model.predict($.tf.tensor([xs])).arraySync()[0]
                 this.msg('==============Intents Predicted==============')
