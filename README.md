@@ -1,5 +1,5 @@
-# Smart Intent Frontend
+# SmartIntentNN Frontend
 
-Visit our tool webpage [http://web3se.gitlab.io/smartvue/](http://web3se.gitlab.io/smartvue/)
+Visit our tool webpage <https://web3.cas-ll.cn>
 
-This is a frontend for the repo [SmartIntent](https://gitlab.com/web3se/smartintent)
+Backend repo <https://github.com/web3se-lab/web3-sekit>

@@ -183,6 +183,19 @@ export default {
                     },
                     ...datasetWithFilters
                 ]
+                option.yAxis = {
+                    type: 'value',
+                    max: 'dataMax',
+                    min: value => {
+                        return Math.floor(value.min * 10 - 1) / 10
+                    },
+                    axisLabel: {
+                        formatter: value => {
+                            return value.toFixed(1)
+                        }
+                    },
+                    minInterval: 0.1
+                }
                 option.series = seriesList
                 option.chartTitle = title
             })
