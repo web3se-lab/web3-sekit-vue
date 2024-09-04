@@ -117,6 +117,7 @@
 </template>
 
 <script>
+import { Promise } from 'bluebird'
 import $ from '~/utils/tool'
 import option from '~/utils/option'
 
@@ -158,18 +159,19 @@ export default {
                 const res = await $.get('contract/get', { key: this.key })
                 if (res) {
                     this.id = parseInt(res.Id)
+                    this.type = res.CompilerVersion?.includes('vyper') ? 'vyper' : 'solidity'
                     this.address = res.ContractAddress
                     this.name = res.ContractName
-                    this.content = res.SourceCode
+                    this.content = $.multiContracts(res.SourceCode, this.type)
                     this.option.series[0].tooltip.padding = 0
                     this.option.series[0].tooltip.borderWidth = 0
-                    this.type = res.CompilerVersion.includes('vyper') ? 'vyper' : 'solidity'
                     // generate code tree
-                    const tree = $.getCodeMap(
-                        $.clearCode($.multiContracts(this.content), this.type),
-                        this.type
-                    )
-                    console.log(tree)
+                    const getCodeMap = () => {
+                        return new Promise(resolve => {
+                            resolve($.getCodeMap($.clearCode(this.content, this.type)))
+                        })
+                    }
+                    const tree = await getCodeMap().timeout(1000)
                     // generate code snippets template for charts
                     for (const i in tree)
                         for (const j in tree[i]) this.tree.push({ key: i + j, code: tree[i][j] })

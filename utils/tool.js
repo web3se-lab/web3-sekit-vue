@@ -2,9 +2,10 @@ import axios from 'axios'
 import * as TF from '@tensorflow/tfjs'
 import KMeans from 'tf-kmeans-browser'
 import kJson from '~/utils/kmeans-model.json'
+
 kJson.distanceFunction = KMeans.cosineDistance
 
-let URL = 'http://10.144.1.1:8081'
+let URL = 'http://192.168.41.45:8081'
 if (process.env.NODE_ENV !== 'development') URL = 'https://api.smart.cas-ll.cn'
 
 export default {
