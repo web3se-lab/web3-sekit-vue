@@ -13,16 +13,16 @@ export default {
     radar: [
         {
             indicator: [
-                { text: 'fee', max: 1 },
-                { text: 'disableTrading', max: 1 },
-                { text: 'blacklist', max: 1 },
-                { text: 'reflect', max: 1 },
-                { text: 'maxTX', max: 1 },
-                { text: 'mint', max: 1 },
-                { text: 'honeypot', max: 1 },
-                { text: 'reward', max: 1 },
-                { text: 'rebase', max: 1 },
-                { text: 'maxSell', max: 1 }
+                { text: 'Fee', max: 1 },
+                { text: 'DisableTrading', max: 1 },
+                { text: 'Blacklist', max: 1 },
+                { text: 'Reflect', max: 1 },
+                { text: 'MaxTX', max: 1 },
+                { text: 'Mint', max: 1 },
+                { text: 'Honeypot', max: 1 },
+                { text: 'Reward', max: 1 },
+                { text: 'Rebase', max: 1 },
+                { text: 'MaxSell', max: 1 }
             ],
             radius: '65%',
             splitNumber: 4,
@@ -58,6 +58,20 @@ export default {
                     name: 'Accuracy',
                     lineStyle: {
                         width: 2
+                    },
+                    label: {
+                        show: false
+                    },
+                    emphasis: {
+                        label: {
+                            show: true,
+                            formatter: params => `${params.value}`
+                        }
+                    },
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: params =>
+                            `${params.seriesName}<br/>${params.name}: ${params.value}`
                     }
                 },
                 {
@@ -66,6 +80,20 @@ export default {
                     name: 'Precision',
                     lineStyle: {
                         width: 2
+                    },
+                    label: {
+                        show: false
+                    },
+                    emphasis: {
+                        label: {
+                            show: true,
+                            formatter: params => `${params.value}`
+                        }
+                    },
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: params =>
+                            `${params.seriesName}<br/>${params.name}: ${params.value}`
                     }
                 },
                 {
@@ -75,7 +103,21 @@ export default {
                         type: 'dashed',
                         width: 2
                     },
-                    name: 'Recall'
+                    name: 'Recall',
+                    label: {
+                        show: false
+                    },
+                    emphasis: {
+                        label: {
+                            show: true,
+                            formatter: params => `${params.value}`
+                        }
+                    },
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: params =>
+                            `${params.seriesName}<br/>${params.name}: ${params.value}`
+                    }
                 },
                 {
                     value: [],
@@ -95,6 +137,20 @@ export default {
                                 offset: 1
                             }
                         ])
+                    },
+                    label: {
+                        show: false
+                    },
+                    emphasis: {
+                        label: {
+                            show: true,
+                            formatter: params => `${params.value}`
+                        }
+                    },
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: params =>
+                            `${params.seriesName}<br/>${params.name}: ${params.value}`
                     }
                 }
             ]

@@ -38,6 +38,7 @@
         "@nuxtjs/composition-api": "^0.34.0",
         "@nuxtjs/eslint-config": "^8.0.0",
         "@nuxtjs/eslint-module": "^3.0.2",
+        "@types/bluebird": "^3.5.42",
         "eslint": "^8.4.1",
         "eslint-config-prettier": "^8.3.0",
         "eslint-plugin-nuxt": "^3.1.0",
