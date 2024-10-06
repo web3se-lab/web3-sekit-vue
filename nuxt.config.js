@@ -3,9 +3,7 @@ export default {
     target: 'static',
     head: {
         title: 'SmartIntentNN',
-        htmlAttrs: {
-            lang: 'en'
-        },
+        htmlAttrs: { lang: 'en' },
         meta: [
             { charset: 'utf-8' },
             {
@@ -16,7 +14,7 @@ export default {
                 hid: 'description',
                 name: 'description',
                 content:
-                    'SmartIntentNN is a deep learning based tool for smart contract intent detection!'
+                    'SmartIntentNN is a deep learning-based tool for smart contract intent detection!'
             },
             {
                 hid: 'keywords',
@@ -28,7 +26,9 @@ export default {
         link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
         script: [
             {
-                src: 'https://hm.baidu.com/hm.js?42707839013393a203b9fe674617bc79'
+                id: 'clstr_globe',
+                type: 'text/javascript',
+                src: '//clustrmaps.com/globe.js?d=UY_-jJRCR9lywTyXlFelrQM3OC76c0mHDcLGFYOtkDU'
             }
         ]
     },
@@ -41,8 +41,7 @@ export default {
         '~/plugins/echarts',
         '~/plugins/vis',
         '~/plugins/flexible',
-        '~/plugins/code-highlight',
-        '~/plugins/ga.js'
+        '~/plugins/code-highlight'
     ],
 
     // Auto import components: https://go.nuxtjs.dev/config-components
