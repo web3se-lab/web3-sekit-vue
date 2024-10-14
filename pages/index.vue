@@ -2,9 +2,11 @@
     <div class="index">
         <b-navbar toggleable="lg" type="light" variant="light" sticky>
             <b-navbar-brand href="#" class="logo">
+                <!--
                 <img src="/logo-iict.png" alt="IICT" />
+                -->
                 <b>SmartIntentNN</b>
-                <b-badge class="version" variant="danger">V1.1.0</b-badge>
+                <b-badge class="version" variant="danger">V1.0</b-badge>
             </b-navbar-brand>
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
             <b-collapse id="nav-collapse" is-nav>
@@ -95,12 +97,13 @@
         <footer class="text-center footer">
             <p>
                 Powered by
-                <a href="https://www.tensorflow.org/js" target="_blank">Tensorflow.js</a>. Generated
-                by <a href="https://gitlab.com/web3se/smartvue" target="_blank">Gitlab CI/CD</a>.
+                <a href="https://www.tensorflow.org/js" target="_blank">Tensorflow.js</a>.
             </p>
+            <!--
             <p>
                 © Institute of Intelligent Computing Technology, Suzhou, CAS. All Rights Reserved.
             </p>
+            -->
         </footer>
 
         <div v-show="false">
