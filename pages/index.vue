@@ -14,6 +14,7 @@
                     <b-nav-item active>Home</b-nav-item>
                     <b-nav-item href="highlight">Highlight</b-nav-item>
                     <b-nav-item href="evaluate">Evaluation</b-nav-item>
+                    <b-nav-item href="/doc" target="_blank">Documentation</b-nav-item>
                 </b-navbar-nav>
 
                 <!-- Right aligned nav items -->

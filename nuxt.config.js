@@ -20,7 +20,7 @@ export default {
                 hid: 'keywords',
                 name: 'keywords',
                 content:
-                    'SmartIntentNN, Intent Detection, Smart Contract, Binance Smart Chain, Blockchain, Web3, Software Engineering'
+                    'SmartIntentNN, Intent Detection, Smart Contract, Solidity, Blockchain, Web3, Software Engineering'
             }
         ],
         link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],

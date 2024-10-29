@@ -5,7 +5,7 @@
             <h2>Experimental Settings</h2>
             <p>
                 <span>Trained Dataset:</span>
-                20,000 smart contracts
+                10,000 smart contracts
             </p>
             <p>
                 <span>Evaluated Dataset:</span>
@@ -13,7 +13,7 @@
             </p>
             <p>
                 <span>Trained batch:</span>
-                Batches 200 | BatchSize 100 | Epoch 100
+                Batches 200 | BatchSize 50 | Epoch 100
             </p>
             <p>
                 <span>Optimizer:</span>
