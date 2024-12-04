@@ -71,7 +71,7 @@ export default {
         return {
             loading: false,
             chart: [],
-            version: 0
+            version: 1
         }
     },
     watch: {

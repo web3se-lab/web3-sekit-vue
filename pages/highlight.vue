@@ -11,10 +11,10 @@
                 />
             </div>
             <div class="list">
-                <h3>Rank List DESC</h3>
+                <h3>Intent Strength Rank (desc)</h3>
                 <div class="content">
                     <div v-for="(item, index) in list" :key="index">
-                        {{ item.fun }}
+                        {{ item.fun }} - {{ item.distance.toFixed(4) }}
                     </div>
                 </div>
             </div>
@@ -190,10 +190,10 @@ export default {
     left: 0;
     top: 0;
     bottom: 0;
-    width: 20rem;
-    max-width: 250px;
+    width: 25vw;
+    max-width: 300px;
     font-size: 12px;
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.5);
     color: #fff;
     margin: auto 0;
     padding: 10px;
@@ -203,10 +203,9 @@ export default {
     font-size: 1.5rem;
 }
 
-.content {
+.list .content {
     overflow: scroll;
     height: 93vh;
-    width: 108%;
 }
 
 @media screen and (max-width: 900px) {
@@ -216,16 +215,12 @@ export default {
         left: 0;
         right: 0;
         max-width: 100%;
-        height: 150px;
+        height: 200px;
         width: 100%;
     }
 
-    .list h3 {
-        display: none;
-    }
-
-    .content {
-        height: 100%;
+    .list .content {
+        height: 80%;
     }
 
     .tool {

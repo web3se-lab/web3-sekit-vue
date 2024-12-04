@@ -2,19 +2,19 @@
     <div class="index">
         <b-navbar toggleable="lg" type="light" variant="light" sticky>
             <b-navbar-brand href="#" class="logo">
-                <!--
                 <img src="/logo-iict.png" alt="IICT" />
-                -->
                 <b>SmartIntentNN</b>
                 <b-badge class="version" variant="danger">V1.0</b-badge>
             </b-navbar-brand>
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
             <b-collapse id="nav-collapse" is-nav>
                 <b-navbar-nav>
-                    <b-nav-item active>Home</b-nav-item>
+                    <b-nav-item active>Detect</b-nav-item>
                     <b-nav-item href="highlight">Highlight</b-nav-item>
-                    <b-nav-item href="evaluate">Evaluation</b-nav-item>
-                    <b-nav-item href="/doc" target="_blank">Documentation</b-nav-item>
+                    <b-nav-item href="evaluate">Evaluate</b-nav-item>
+                    <b-nav-item href="https://github.com/web3se-lab/web3-sekit" target="_blank">
+                        GitHub
+                    </b-nav-item>
                 </b-navbar-nav>
 
                 <!-- Right aligned nav items -->
@@ -43,7 +43,6 @@
                 @close="contract.content = ''"
             />
         </transition>
-
         <div v-if="content" class="fullscreen">
             <div class="info text-center">
                 <b-spinner
@@ -100,11 +99,9 @@
                 Powered by
                 <a href="https://www.tensorflow.org/js" target="_blank">Tensorflow.js</a>.
             </p>
-            <!--
             <p>
                 © Institute of Intelligent Computing Technology, Suzhou, CAS. All Rights Reserved.
             </p>
-            -->
         </footer>
 
         <div v-show="false">
