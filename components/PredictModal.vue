@@ -6,9 +6,11 @@
             </button>
             <b-spinner v-else variant="primary" class="close" type="grow" label="Spinning" />
             <div ref="line" class="modal-box">
-                <h1>Predict Smart Contract Intent</h1>
-                <h5>Powered by Tensorflow.js, deep learning is running on your Browser!</h5>
-                <br />
+                <h1>SmartIntentNN V{{ version }}</h1>
+                <h5>
+                    Powered by Tensorflow.js, the deep neural network is running on your Browser!
+                </h5>
+                <hr />
                 <p v-for="(item, index) in msgs" :key="index" v-html="item"></p>
                 <p v-if="id">
                     <a target="_blank" :href="url + id">See the ground truth: {{ address }}</a>
@@ -24,22 +26,11 @@ import intent from '~/utils/type'
 export default {
     name: 'PredictModal',
     props: {
-        id: {
-            type: Number,
-            default: 0
-        },
-        content: {
-            type: String,
-            default: ''
-        },
-        address: {
-            type: String,
-            default: ''
-        },
-        type: {
-            type: String,
-            default: 'solidity'
-        }
+        id: { type: Number, default: 0 },
+        content: { type: String, default: '' },
+        address: { type: String, default: '' },
+        type: { type: String, default: 'solidity' },
+        version: { type: Number, default: 2 }
     },
     data() {
         return {
@@ -49,7 +40,8 @@ export default {
         }
     },
     mounted() {
-        this.predict()
+        if (this.version === 1) this.predict()
+        else this.predict2()
     },
     methods: {
         msg(m) {
@@ -62,10 +54,15 @@ export default {
         close() {
             this.$emit('close')
         },
+        padding(xs) {
+            return xs.map(x => {
+                while (x.length < 256) x.push(Array(768).fill(0.0))
+                return x.slice(0, 256)
+            })
+        },
         highlight(res) {
-            this.msg('===============Intent Highlight=================')
             this.msg('Intent Highlight K-means model is loading...')
-            this.msg(`Intent Highlight K-means is loaded...k=${$.kmeans.k}`)
+            this.msg(`Intent Highlight K-means is loaded, k=${$.kmeans.k}`)
             const xs = []
             for (const i in res) for (const j in res[i]) xs.push(res[i][j])
             while (xs.length < 256) xs.push(Array(512).fill(0.0))
@@ -88,19 +85,23 @@ export default {
         async predict() {
             try {
                 this.loading = true
-                if (this.id) this.msg(`Id: ${this.id}`)
-                if (this.address) this.msg(`Address: ${this.address}`)
-                this.msg('Start predicting...Waiting...')
-                this.msg('=================Embedding==================')
+                if (this.id) this.msg(`Dataset Id: ${this.id}`)
+                if (this.address) this.msg(`Contract Address: ${this.address}`)
+                this.msg('Start to predict intents in the smart contract...')
+
+                this.msg('Embedding smart contract...')
                 const res = await $.post('data/embedding', { text: this.content, type: this.type })
-                this.msg('Smart Contract context embedded!')
+                this.msg('Smart Contract context is embedded!')
+
                 const xs = this.highlight(res.Embedding)
-                this.msg('=================DNN Predict=================')
-                this.msg('DNN (with BiLSTM) model is loading...')
+
+                this.msg('BiLSTM-based DNN model is loading...')
                 const model = await $.tf.loadLayersModel('use-high-bilstm-x16/model.json')
                 this.msg('DNN model is predicting intents...')
                 const ys = model.predict($.tf.tensor([xs])).arraySync()[0]
-                this.msg('==============Intents Predicted==============')
+                this.msg('Intent has been predicted.')
+
+                this.msg('============================================')
                 for (const i in ys)
                     this.msg(
                         `${
@@ -109,7 +110,51 @@ export default {
                                 : '<span style="color: #28a745;">'
                         }${intent[i]} ${ys[i]}${ys[i] >= 0.5 ? '</span>' : ''}`
                     )
-                this.msg('===================END======================')
+                this.msg('============================================')
+            } catch (e) {
+                console.error(e)
+                this.$bvToast.toast(e.message, {
+                    title: 'Error predicting',
+                    variant: 'danger',
+                    solid: true
+                })
+            } finally {
+                this.loading = false
+            }
+        },
+        async predict2() {
+            try {
+                this.loading = true
+                if (this.id) this.msg(`Dataset Id: ${this.id}`)
+                if (this.address) this.msg(`Contract Address: ${this.address}`)
+                this.msg('Start to predict intents in the smart contract...')
+
+                this.msg('Embedding smart contract...')
+                const res = await $.post('smartbert/embed', { code: this.content, pool: 'avg' })
+                const xs = []
+                Object.values(res).forEach(innerObj =>
+                    Object.values(innerObj).forEach(value => xs.push(value))
+                )
+                this.msg('Smart Contract context is embedded by <b>SmartBERT</b> v2!')
+
+                this.msg('BiLSTM-based DNN model is loading...')
+                const model = await $.tf.loadGraphModel('smartbert-bilstm/model.json')
+                this.msg('DNN model is predicting intents...')
+                const ys = (
+                    await model.executeAsync($.tf.tensor(this.padding([xs])))
+                ).arraySync()[0]
+                this.msg('Intent has been predicted.')
+
+                this.msg('============================================')
+                for (const i in ys)
+                    this.msg(
+                        `${
+                            ys[i] >= 0.5
+                                ? '<span style="background: #dc3545;color: #fff;">'
+                                : '<span style="color: #28a745;">'
+                        }${intent[i]} ${ys[i]}${ys[i] >= 0.5 ? '</span>' : ''}`
+                    )
+                this.msg('============================================')
             } catch (e) {
                 console.error(e)
                 this.$bvToast.toast(e.message, {

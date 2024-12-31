@@ -1,8 +1,7 @@
 <template>
     <div class="index">
-        <b-navbar toggleable="lg" type="light" variant="light" sticky>
+        <b-navbar toggleable="lg" type="dark" variant="primary" sticky>
             <b-navbar-brand href="#" class="logo">
-                <img src="/logo-iict.png" alt="IICT" />
                 <b>SmartIntentNN</b>
                 <b-badge class="version" variant="danger">V1.0</b-badge>
             </b-navbar-brand>
@@ -40,6 +39,7 @@
                 :content="contract.content"
                 :address="contract.address"
                 :type="contract.type"
+                :version="version"
                 @close="contract.content = ''"
             />
         </transition>
@@ -67,7 +67,12 @@
                     <b-button-group>
                         <b-button variant="success" @click="tab = 0">Code 📜</b-button>
                         <b-button variant="primary" @click="tab = 1">CCTree 🌲</b-button>
-                        <b-button variant="danger" @click="predict(null)">Predict 🚀</b-button>
+                        <b-button variant="warning" @click="predict(1, null)">
+                            Predict V1 🚀
+                        </b-button>
+                        <b-button variant="danger" @click="predict(2, null)">
+                            Predict V2 🚀
+                        </b-button>
                     </b-button-group>
                     <b-button variant="info" class="upload" block @click="showModal = true">
                         Detect My Smart Contract
@@ -96,11 +101,7 @@
 
         <footer class="text-center footer">
             <p>
-                Powered by
-                <a href="https://www.tensorflow.org/js" target="_blank">Tensorflow.js</a>.
-            </p>
-            <p>
-                © Institute of Intelligent Computing Technology, Suzhou, CAS. All Rights Reserved.
+                Powered by <a href="https://www.tensorflow.org/js" target="_blank">Tensorflow.js</a>
             </p>
         </footer>
 
@@ -140,6 +141,7 @@ export default {
                 content: '',
                 type: ''
             },
+            version: 2,
             showModal: false,
             tree: [],
             option: $.getObject(option)
@@ -223,19 +225,21 @@ export default {
             }
             return [data]
         },
-        predict(content) {
+        predict(version, content) {
             if (content) {
                 // user upload
                 this.contract.id = 0
                 this.contract.address = ''
                 this.contract.content = content
                 this.contract.type = 'solidity'
+                this.version = version
             } else {
                 // dataset
                 this.contract.id = this.id
                 this.contract.address = this.address
                 this.contract.content = this.content
                 this.contract.type = this.type
+                this.version = version
             }
         }
     }
