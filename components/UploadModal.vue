@@ -9,9 +9,14 @@
                 class="text"
                 placeholder="Copy the smart contract code here (Solidity)...✍️"
             ></b-form-textarea>
-            <b-button variant="danger" class="btn" block size="lg" @click="upload">
-                Detect 🧐
-            </b-button>
+            <b-button-group class="btn-group">
+                <b-button variant="warning" class="btn" size="lg" @click="upload(1)">
+                    Detect by V1 🧐
+                </b-button>
+                <b-button variant="danger" class="btn" size="lg" @click="upload(2)">
+                    Detect by V2 🧐 (Recommend)
+                </b-button>
+            </b-button-group>
         </div>
     </div>
 </template>
@@ -19,13 +24,11 @@
 export default {
     name: 'UploadModal',
     data() {
-        return {
-            text: ''
-        }
+        return { text: '' }
     },
     methods: {
-        upload() {
-            this.$emit('upload', this.text)
+        upload(version) {
+            this.$emit('upload', version, this.text)
         },
         close() {
             this.$emit('close')
@@ -57,11 +60,19 @@ export default {
     background: #fff4d3;
     color: #000;
 }
-.btn {
-    margin-top: 1rem;
-}
 .form {
     position: relative;
+}
+.form .btn-group {
+    margin: 0;
+    padding: 0;
+    margin-top: 1rem;
+    width: 100%;
+    display: block;
+}
+.form .btn-group .btn {
+    width: 50%;
+    float: left;
 }
 .close {
     color: #000;

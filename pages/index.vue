@@ -3,7 +3,7 @@
         <b-navbar toggleable="lg" type="dark" variant="primary" sticky>
             <b-navbar-brand href="#" class="logo">
                 <b>SmartIntentNN</b>
-                <b-badge class="version" variant="danger">V1.0</b-badge>
+                <b-badge class="version" variant="danger">V2.0</b-badge>
             </b-navbar-brand>
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
             <b-collapse id="nav-collapse" is-nav>
@@ -19,8 +19,14 @@
                 <!-- Right aligned nav items -->
                 <b-navbar-nav class="ml-auto">
                     <b-nav-form @submit.prevent="loadData">
-                        <b-form-input v-model="key" class="search" placeholder="Id/Address" />
-                        <b-button type="button" @click="loadData">Search In Dataset</b-button>
+                        <b-form-input
+                            v-model="key"
+                            class="search"
+                            placeholder="Search in Dataset by Id or Address"
+                        />
+                        <b-button variant="success" type="button" @click="loadData">
+                            Search
+                        </b-button>
                     </b-nav-form>
                 </b-navbar-nav>
             </b-collapse>
@@ -68,10 +74,10 @@
                         <b-button variant="success" @click="tab = 0">Code 📜</b-button>
                         <b-button variant="primary" @click="tab = 1">CCTree 🌲</b-button>
                         <b-button variant="warning" @click="predict(1, null)">
-                            Predict V1 🚀
+                            Detect by V1 🚀
                         </b-button>
                         <b-button variant="danger" @click="predict(2, null)">
-                            Predict V2 🚀
+                            Detect by V2 🚀
                         </b-button>
                     </b-button-group>
                     <b-button variant="info" class="upload" block @click="showModal = true">
@@ -101,7 +107,9 @@
 
         <footer class="text-center footer">
             <p>
-                Powered by <a href="https://www.tensorflow.org/js" target="_blank">Tensorflow.js</a>
+                Powered by
+                <a href="https://www.tensorflow.org/js" target="_blank">Tensorflow.js</a>, Developed
+                By <a href="https://www.devil.ren" target="_blank">Youwei Huang</a>
             </p>
         </footer>
 
@@ -296,11 +304,11 @@ h3 {
 }
 
 .tab-code {
-    width: 95%;
+    width: 85%;
     margin: 0 auto;
     margin-top: 1rem;
     font-size: 0.8rem;
-    max-width: 1200px;
+    max-width: 1024px;
 }
 
 .title {
@@ -329,9 +337,9 @@ h3 {
 }
 
 .version {
-    transform: scale(0.6);
+    transform: scale(0.7);
     position: absolute;
-    right: -30px;
+    right: -28px;
     top: -6px;
 }
 
