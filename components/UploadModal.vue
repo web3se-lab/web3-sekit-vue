@@ -28,7 +28,7 @@ export default {
     },
     methods: {
         upload(version) {
-            this.$emit('upload', version, this.text)
+            this.$emit('upload', this.text, version)
         },
         close() {
             this.$emit('close')

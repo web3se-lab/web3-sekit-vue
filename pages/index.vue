@@ -49,7 +49,8 @@
                 @close="contract.content = ''"
             />
         </transition>
-        <div v-if="content" class="fullscreen">
+
+        <div class="fullscreen">
             <div class="info text-center">
                 <b-spinner
                     v-show="loading"
@@ -70,19 +71,23 @@
 
             <div class="content">
                 <div class="text-center">
-                    <b-button-group>
-                        <b-button variant="success" @click="tab = 0">Code 📜</b-button>
-                        <b-button variant="primary" @click="tab = 1">CCTree 🌲</b-button>
-                        <b-button variant="warning" @click="predict(1, null)">
-                            Detect by V1 🚀
-                        </b-button>
-                        <b-button variant="danger" @click="predict(2, null)">
-                            Detect by V2 🚀
-                        </b-button>
+                    <b-button-group v-show="content">
+                        <b-button variant="success" @click="tab = 0"> Code 📜 </b-button>
+                        <b-button variant="primary" @click="tab = 1"> CCTree 🌲 </b-button>
+                        <b-button variant="danger" @click="predict(null)"> Detect 🚀 </b-button>
+                        <b-dropdown :text="'V' + version">
+                            <b-dropdown-item @click="version = 1">V1</b-dropdown-item>
+                            <b-dropdown-item @click="version = 2">V2</b-dropdown-item>
+                        </b-dropdown>
                     </b-button-group>
-                    <b-button variant="info" class="upload" block @click="showModal = true">
-                        Detect My Smart Contract
-                        <b-badge variant="danger">New!</b-badge>
+                    <b-button
+                        v-show="!loading"
+                        block
+                        variant="info"
+                        class="upload"
+                        @click="showModal = true"
+                    >
+                        Detect My Smart Contract ✍️
                     </b-button>
                 </div>
 
@@ -97,14 +102,13 @@
                     <v-chart class="chart" :option="option" />
                 </div>
             </div>
-        </div>
 
-        <div v-if="!content && !loading" class="replace">
-            404 NOT FOUND
-            <br />
-            TRY ANOTHER PK OR ADDRESS
+            <div v-if="!content && !loading" class="replace">
+                404 NOT FOUND
+                <br />
+                TRY ANOTHER PK OR ADDRESS
+            </div>
         </div>
-
         <footer class="text-center footer">
             <p>
                 Powered by
@@ -143,12 +147,7 @@ export default {
             address: '',
             content: '',
             type: '',
-            contract: {
-                id: '',
-                address: '',
-                content: '',
-                type: ''
-            },
+            contract: { id: '', address: '', content: '', type: '' },
             version: 2,
             showModal: false,
             tree: [],
@@ -233,21 +232,20 @@ export default {
             }
             return [data]
         },
-        predict(version, content) {
+        predict(content, version) {
+            if (version) this.version = version
             if (content) {
                 // user upload
                 this.contract.id = 0
                 this.contract.address = ''
                 this.contract.content = content
                 this.contract.type = 'solidity'
-                this.version = version
             } else {
                 // dataset
                 this.contract.id = this.id
                 this.contract.address = this.address
                 this.contract.content = this.content
                 this.contract.type = this.type
-                this.version = version
             }
         }
     }
@@ -255,7 +253,9 @@ export default {
 </script>
 <style scoped>
 .fullscreen {
-    min-height: 85vh;
+    min-height: 80vh;
+    display: block;
+    width: 100%;
 }
 
 h3 {
@@ -348,7 +348,7 @@ h3 {
 }
 
 .upload {
-    width: 25rem;
+    width: 21rem;
     margin: 0 auto;
     margin-top: 1rem;
 }

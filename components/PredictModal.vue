@@ -6,8 +6,8 @@
             </button>
             <b-spinner v-else variant="primary" class="close" type="grow" label="Spinning" />
             <div ref="line" class="modal-box">
-                <h1>SmartIntentNN V{{ version }}</h1>
-                <h5>
+                <h1 class="text-center">SmartIntentNN V{{ version }}</h1>
+                <h5 class="text-center">
                     Powered by Tensorflow.js, the deep neural network is running on your Browser!
                 </h5>
                 <hr />
@@ -91,7 +91,7 @@ export default {
 
                 this.msg('Embedding smart contract...')
                 const res = await $.post('data/embedding', { text: this.content, type: this.type })
-                this.msg('Smart Contract context is embedded!')
+                this.msg('Smart Contract context is embedded by Universal Sentence Encoder!')
 
                 const xs = this.highlight(res.Embedding)
 
@@ -188,7 +188,7 @@ export default {
 
 .modal-box {
     height: 100%;
-    width: 103%;
+    width: 100%;
     overflow-y: scroll;
     color: #fff;
 }
@@ -199,8 +199,8 @@ export default {
     max-width: 800px;
     min-width: 370px;
     border-radius: 1rem;
-    height: 65vh;
-    max-height: 500px;
+    height: 75vh;
+    max-height: 650px;
     background: rgba(0, 0, 0, 0.8);
     position: relative;
 }
