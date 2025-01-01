@@ -54,31 +54,20 @@ export default {
         close() {
             this.$emit('close')
         },
-        padding(xs) {
-            return xs.map(x => {
-                while (x.length < 256) x.push(Array(768).fill(0.0))
-                return x.slice(0, 256)
-            })
+        padding(xs, seq, dim) {
+            while (xs.length < seq) xs.push(Array(dim).fill(0.0))
+            return xs.slice(0, seq)
         },
-        highlight(res) {
-            this.msg('Intent Highlight K-means model is loading...')
-            this.msg(`Intent Highlight K-means is loaded, k=${$.kmeans.k}`)
-            const xs = []
-            for (const i in res) for (const j in res[i]) xs.push(res[i][j])
-            while (xs.length < 256) xs.push(Array(512).fill(0.0))
+        highlight(xs, scale = 16, hold = 0.21) {
+            this.msg(`Intent Highlight K-means model is loaded, k=${$.kmeans.k}`)
             const tx = $.tf.tensor(xs)
             const ty = $.kmeans.predict(tx).distance.arraySync()
             this.msg(`Distances are predicted`)
-            const data = []
-            for (const i in xs) data.push({ vector: xs[i], distance: ty[i] })
             const xs2 = []
-            for (const item of data)
+            for (const i in ty)
                 xs2.push(
-                    item.distance < 0.21
-                        ? item.vector
-                        : $.tf.tensor(item.vector).mul($.tf.scalar(16)).arraySync()
+                    ty[i] < hold ? xs[i] : $.tf.tensor(xs[i]).mul($.tf.scalar(scale)).arraySync()
                 )
-
             this.msg(`Embeddings are scaled X16`)
             return xs2
         },
@@ -93,12 +82,17 @@ export default {
                 const res = await $.post('data/embedding', { text: this.content, type: this.type })
                 this.msg('Smart Contract context is embedded by Universal Sentence Encoder!')
 
-                const xs = this.highlight(res.Embedding)
+                const xs = []
+                Object.values(res.Embedding).forEach(innerObj =>
+                    Object.values(innerObj).forEach(value => xs.push(value))
+                )
+                const xs2 = this.highlight(xs)
+                const xs3 = this.padding(xs2, 256, 512)
 
                 this.msg('BiLSTM-based DNN model is loading...')
                 const model = await $.tf.loadLayersModel('use-high-bilstm-x16/model.json')
                 this.msg('DNN model is predicting intents...')
-                const ys = model.predict($.tf.tensor([xs])).arraySync()[0]
+                const ys = model.predict($.tf.tensor([xs3])).arraySync()[0]
                 this.msg('Intent has been predicted.')
 
                 this.msg('============================================')
@@ -131,18 +125,18 @@ export default {
 
                 this.msg('Embedding smart contract...')
                 const res = await $.post('smartbert/embed', { code: this.content, pool: 'avg' })
+                this.msg('Smart Contract context is embedded by <b>SmartBERT</b> v2!')
+
                 const xs = []
                 Object.values(res).forEach(innerObj =>
                     Object.values(innerObj).forEach(value => xs.push(value))
                 )
-                this.msg('Smart Contract context is embedded by <b>SmartBERT</b> v2!')
+                const xs2 = this.padding(xs, 256, 768)
 
                 this.msg('BiLSTM-based DNN model is loading...')
                 const model = await $.tf.loadGraphModel('smartbert-bilstm/model.json')
                 this.msg('DNN model is predicting intents...')
-                const ys = (
-                    await model.executeAsync($.tf.tensor(this.padding([xs])))
-                ).arraySync()[0]
+                const ys = (await model.executeAsync($.tf.tensor([xs2]))).arraySync()[0]
                 this.msg('Intent has been predicted.')
 
                 this.msg('============================================')
