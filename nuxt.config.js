@@ -1,6 +1,12 @@
 export default {
     ssr: false,
     target: 'static',
+    
+    // GitHub Pages configuration for subdirectory deployment
+    router: {
+        base: process.env.NODE_ENV === 'production' ? '/web3-sekit-vue/' : '/'
+    },
+    
     head: {
         title: 'SmartIntentNN',
         htmlAttrs: { lang: 'en' },
@@ -23,7 +29,7 @@ export default {
                     'SmartIntentNN, Intent Detection, Smart Contract, Solidity, Blockchain, Web3, Software Engineering'
             }
         ],
-        link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+        link: [{ rel: 'icon', type: 'image/x-icon', href: process.env.NODE_ENV === 'production' ? '/web3-sekit-vue/favicon.ico' : '/favicon.ico' }],
         script: [
             {
                 id: 'clstr_globe',
@@ -91,6 +97,8 @@ export default {
         productionGzipExtensions: ['js', 'css', 'svg'],
         babel: {
             compact: true
-        }
+        },
+        // GitHub Pages public path configuration
+        publicPath: process.env.NODE_ENV === 'production' ? '/web3-sekit-vue/_nuxt/' : '/_nuxt/'
     }
 }
